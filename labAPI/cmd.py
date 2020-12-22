@@ -5,27 +5,49 @@ import click
 import os
 
 @click.command()
-@click.argument('option', type=click.Choice(['build', 'example', 'test', 'watch']))
-def main(option):
-    if option == 'example':
+@click.argument('option', type=click.Choice(['build', 'demo', 'install', 'test', 'watch']))
+@click.option('--verbose/--quiet', default=False)
+def main(option, verbose):
+
+    if option == 'demo':
         from labAPI.tests import test_example
-        print('LabAPI command-line utility: launching example environment.')
+        if verbose:
+            print('LabAPI command-line utility: launching demo environment.')
         test_example.test_example(test=False, host=True)
 
     if option == 'test':
-        print('LabAPI command-line utility: running tests.')
+        if verbose:
+            print('LabAPI command-line utility: running tests.')
         path = os.path.abspath(os.path.join(__file__, '../tests'))
         import pytest
         pytest.main(['-x', path])
 
     if option == 'build':
-        print('LabAPI command-line utility: building webapp.')
+        if verbose:
+            print('LabAPI command-line utility: building webapp.')
         path = os.path.abspath(os.path.join(__file__, '../dashboard/static'))
         os.chdir(path)
-        os.system('npm run build')
+        cmd = 'npm run build'
+        if not verbose:
+            cmd += ' --quiet'
+        os.system(cmd)
 
     if option == 'watch':
-        print('LabAPI command-line utility: building webapp in watch mode.')
+        if verbose:
+            print('LabAPI command-line utility: building webapp in watch mode.')
         path = os.path.abspath(os.path.join(__file__, '../dashboard/static'))
         os.chdir(path)
-        os.system('npm run watch')
+        cmd = 'npm run watch'
+        if not verbose:
+            cmd += ' --quiet'
+        os.system(cmd)
+
+    if option == 'install':
+        if verbose:
+            print('LabAPI command-line utility: installing node_modules.')
+        path = os.path.abspath(os.path.join(__file__, '../dashboard/static'))
+        os.chdir(path)
+        cmd = 'npm install .'
+        if not verbose:
+            cmd += ' --no-progress --silent'
+        os.system(cmd)

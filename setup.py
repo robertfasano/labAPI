@@ -16,3 +16,10 @@ setup(
     labAPI=labAPI.cmd:main
     ''',
 )
+
+import os
+print('Installing node_modules...')
+os.system('labAPI install')
+print('Building application...')
+os.system('labAPI build')
+print('LabAPI installation complete!')
