@@ -71,6 +71,11 @@ function parameters(state={}, action) {
       return produce(state, draft => {
         draft[action.path]['value'] = action.value
       })
+
+    case 'parameters/setUnit':
+      return produce(state, draft => {
+        draft[action.path]['unit'] = action.value
+      })
     }
 }
 

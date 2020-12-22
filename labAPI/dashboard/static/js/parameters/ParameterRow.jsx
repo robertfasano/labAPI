@@ -46,6 +46,7 @@ function ParameterRow(props) {
             />
           </TableCell>
           <TableCell/>
+          <TableCell/>
         </TableRow>
       </React.Fragment>
     )
@@ -67,7 +68,7 @@ function ParameterRow(props) {
           <TableCell>{props.name}</TableCell>
           <TableCell align='right'>
             <Select value={props.data.value}
-                    style={{width: 60}}
+                    style={{width: 80}}
                     onChange={(event) => handleChange(event)}
                     >
               {props.data.options.map((row, index) => {
@@ -79,6 +80,7 @@ function ParameterRow(props) {
               }
             </Select>
           </TableCell>
+          <TableCell/>
           <TableCell/>
         </TableRow>
       </React.Fragment>
@@ -106,6 +108,7 @@ function ParameterRow(props) {
             />
           </TableCell>
           <TableCell/>
+          <TableCell/>
         </TableRow>
       </React.Fragment>
     )
@@ -113,8 +116,12 @@ function ParameterRow(props) {
 
   if (props.data.type == 'measurement') {
     let value = ''
-    if (props.data.value != null) {
-      value = props.data.value.toFixed(3)
+    if (props.value != null) {
+      value = props.value.toFixed(3)
+    }
+
+    function updateUnit(event) {
+      props.dispatch({type: 'parameters/setUnit', path: props.path, value: event.target.value})
     }
 
     return (
@@ -123,13 +130,27 @@ function ParameterRow(props) {
           <TableCell><AiTwotoneExperiment size={20} color='#8f8f8f'/></TableCell>
           <TableCell>{props.name}</TableCell>
           <TableCell align='right'>
-            <TextField value={value} disabled={true} style={{width: 60}}/>
+            <TextField value={value} disabled={true} style={{width: 80}}/>
+          </TableCell>
+          <TableCell>
+            {Object.keys(props.data.value).length > 1? (
+            <Select value={props.data.unit}
+                    style={{width: 80}}
+                    onChange={updateUnit}
+                    >
+              {Object.keys(props.data.value).map((row, index) => {
+                  return (
+                    <MenuItem key={row} value={row}>{row}</MenuItem>
+                    )
+                  }
+                )
+              }
+            </Select>
+          ) : null }
           </TableCell>
           <TableCell>
             <IconButton onClick={() => props.dispatch({type: 'plotting/toggle', path: props.path})} color={props.plotted? 'primary': 'default'}>
               <TimelineIcon/>
-
-
             </IconButton>
           </TableCell>
         </TableRow>
@@ -140,9 +161,10 @@ function ParameterRow(props) {
 }
 
 function mapStateToProps(state, ownProps){
-
+  let data = state['parameters'][ownProps.path]
   return {
-          data: state['parameters'][ownProps.path],
+          data: data,
+          value: data.value[data.unit],
           plotted: Object.keys(state['plotting'].data).includes(ownProps.path)
 
         }

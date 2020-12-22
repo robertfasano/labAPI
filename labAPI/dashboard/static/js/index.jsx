@@ -27,6 +27,7 @@ function semiflatten(obj) {
   let flattened = flatten(obj, {delimiter: '/', safe: true})
   let semiflattened = {}
   for (var addr in flattened) {
+    addr = addr.replace('value/', 'value.')
     let newAddr = addr.replace(/\/([^\/]*)$/,'\.$1')  // replace last occurrence of '/' with '.'
     semiflattened[newAddr] = flattened[addr]
   }

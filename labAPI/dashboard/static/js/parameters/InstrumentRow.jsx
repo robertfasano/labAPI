@@ -36,6 +36,7 @@ function InstrumentRow(props) {
           {props.expanded.includes(props.path)? (<ExpandLessIcon />): <ExpandMoreIcon />}
         </IconButton>
       </TableCell>
+      <TableCell/>
     </TableRow>
 
 

@@ -20,7 +20,8 @@ const SortableContainer = sortableContainer(({children}) => {
 
 function PlotContainer(props) {
   function refresh() {
-    post('/history', {paths: Object.keys(props.parameters)}, (response) => {
+
+    post('/history', {paths: props.units}, (response) => {
       for (let path of Object.keys(response)) {
         props.dispatch({type: 'plotting/setData', path: path, data: response[path]})
 
@@ -56,10 +57,15 @@ function PlotContainer(props) {
 }
 
 function mapStateToProps(state, ownProps){
-
+  let units = {}
+  let paths = state.plotting.parameters
+  for (let path of paths) {
+    units[path] = state['parameters'][path].unit
+  }
   return {
           parameters: state['plotting'].data,
-          paths: state.plotting.parameters
+          paths: paths,
+          units: units
         }
 }
 

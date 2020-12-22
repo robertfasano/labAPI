@@ -78,6 +78,7 @@ function ParameterTable(props) {
                 {expanded.length<Object.keys(props.instruments).length? (<ExpandMoreIcon/>): <ExpandLessIcon/>}
               </IconButton>
             </TableCell>
+            <TableCell/>
           </TableRow>
         </TableHead>
         <TableBody>

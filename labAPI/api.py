@@ -119,6 +119,12 @@ class API:
                 data[addr]['x'] = list(self.environment.monitor.data[addr].dropna().index.strftime('%Y-%m-%dT%H:%M:%S.%f%z'))
                 data[addr]['y'] = list(self.environment.monitor.data[addr].dropna())
 
+                # unit conversions
+                parameter = self.environment.parameters[addr]
+                unit = addrs[addr]
+                if unit != parameter.default_unit:
+                    data[addr]['y'] = list(map(parameter.unit_converters[unit], data[addr]['y']))
+
             return json.dumps(data)
 
         app.run(host=self.addr, port=self.port, debug=self.debug)

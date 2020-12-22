@@ -1,5 +1,5 @@
 import gc
-from labAPI import Parameter, Instrument, API, Monitor
+from labAPI import Parameter, Instrument, API, Monitor, Measurement
 import logging
 import datetime
 
@@ -101,12 +101,17 @@ class Environment:
             nest(addr, nested_state, addr)
         return nested_state
 
-    def snapshot(self, deep=False, nested = False, log=False):
+    def snapshot(self, deep=False, nested=False, log=False):
         ''' Stores all current parameter values in a dictionary '''
         state = {}
         for p in self.parameters:
             state[p] = self.parameters[p].snapshot(deep)
+
         if log:
+            # log only default units for measurements
+            for name, parameter in self.parameters.items():
+                if isinstance(parameter, Measurement):
+                    state[name] = state[name][parameter.default_unit]
             self.monitor.append(state)
         if nested:
             return self.unflatten(state)
