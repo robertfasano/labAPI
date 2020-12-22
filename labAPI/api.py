@@ -73,8 +73,8 @@ class API:
 
     def serve(self):
         app = Flask(__name__,
-                    template_folder=os.path.join(path, 'dashboard\\templates'),
-                    static_folder=os.path.join(path, 'dashboard\\static'))
+                    template_folder=os.path.join(path, 'dashboard/templates'),
+                    static_folder=os.path.join(path, 'dashboard/static'))
 
         @app.route("/")
         def main():
