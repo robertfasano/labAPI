@@ -36,9 +36,7 @@ class PMT(Instrument):
 
 def test_example(test=True, host=False):
     laser = Laser()
-    laser.temperature.get()
     servo = IntensityServo()
-    servo.intensity.get()
 
     pmt = PMT()
 

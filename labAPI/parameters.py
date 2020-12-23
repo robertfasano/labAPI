@@ -180,10 +180,15 @@ class Knob(Parameter):
         return self.value
 
 class Measurement(Parameter):
-    def __init__(self, name, get_cmd, default_unit='_'):
+    def __init__(self, name, get_cmd, default_unit=' '):
         super().__init__(name=name, get_cmd=get_cmd)
         self.unit_converters = {}
         self.default_unit = default_unit
+
+    def convert(self, value, unit):
+        if value is None:
+            return None
+        return self.unit_converters[unit](value)
 
     def set(self, value):
         raise ValueError('Measurements are read-only.')
@@ -207,7 +212,7 @@ class Measurement(Parameter):
     def snapshot(self, deep=False):
         value = {self.default_unit: self.value}
         for unit, convert in self.unit_converters.items():
-            value[unit] = convert(value[self.default_unit])
+            value[unit] = self.convert(value[self.default_unit], unit)
         if deep:
             return {'value': value, 'type': 'measurement', 'unit': self.default_unit}
         return value
