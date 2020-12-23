@@ -15,7 +15,7 @@ import FilterPopover from './FilterPopover.jsx'
 import FilterGroup from './FilterGroup.jsx'
 
 import {flatten, unflatten} from 'flat';
-
+import {parse} from 'json5'
 function ParameterTable(props) {
   const [expanded, setExpanded] = React.useState([])
   function toggleExpandAll() {
@@ -25,7 +25,7 @@ function ParameterTable(props) {
 
   function sync() {
     get('/parameters', (value) => {
-      for (const [path, value] of Object.entries(value)) {
+      for (const [path, value] of Object.entries(parse(value))) {
         props.dispatch({type: 'parameters/update', path: path, value: value})
       }
     })
