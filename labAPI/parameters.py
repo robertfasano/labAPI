@@ -180,7 +180,7 @@ class Knob(Parameter):
         return self.value
 
 class Measurement(Parameter):
-    def __init__(self, name, get_cmd, default_unit=' '):
+    def __init__(self, name, get_cmd=None, default_unit=' '):
         super().__init__(name=name, get_cmd=get_cmd)
         self.unit_converters = {}
         self.default_unit = default_unit
@@ -189,9 +189,6 @@ class Measurement(Parameter):
         if value is None:
             return None
         return self.unit_converters[unit](value)
-
-    def set(self, value):
-        raise ValueError('Measurements are read-only.')
 
     def get(self, unit=None):
         self.value = super().get()
