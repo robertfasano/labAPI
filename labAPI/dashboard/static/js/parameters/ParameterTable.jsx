@@ -24,8 +24,8 @@ function ParameterTable(props) {
   }
 
   function sync() {
-    get('/parameters', (value) => {
-      for (const [path, value] of Object.entries(parse(value))) {
+    get('/parameters', (response) => {
+      for (const [path, value] of Object.entries(response)) {
         props.dispatch({type: 'parameters/update', path: path, value: value})
       }
     })
