@@ -38,6 +38,8 @@ class Environment:
                 break
             addr.append(obj.name)
         addr.reverse()
+        if len(addr) == 1:
+            addr = ['uncategorized', *addr]
         return '/'.join(addr)
 
     def host(self, addr='127.0.0.1:8000', debug=False):
@@ -63,7 +65,7 @@ class Environment:
             if addr in parameters:
                 logging.warning(f'Warning: overwriting duplicate parameter: {addr}')
 
-            parameters[self.get_address(item)] = item
+            parameters[addr] = item
 
         return instruments, parameters
 

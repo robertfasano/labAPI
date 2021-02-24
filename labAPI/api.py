@@ -103,6 +103,8 @@ class API:
 
         @app.route("/parameters/<path:addr>", methods=['GET', 'POST'])
         def parameter(addr):
+            if '/' not in addr:
+                addr = 'uncategorized/' + addr
             parameter = self.environment.parameters[addr]
             if request.method == 'POST':
                 parameter.set(request.json['value'])
