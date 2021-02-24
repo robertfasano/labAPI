@@ -15,7 +15,7 @@ import FilterPopover from './FilterPopover.jsx'
 import FilterGroup from './FilterGroup.jsx'
 
 import {flatten, unflatten} from 'flat';
-import {parse} from 'json5'
+
 function ParameterTable(props) {
   const [expanded, setExpanded] = React.useState([])
   function toggleExpandAll() {
