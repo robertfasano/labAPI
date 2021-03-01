@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ButtonAppBar from './TopBar.jsx'
-import ParameterTable from './parameters/ParameterTable.jsx'
+import NetworkDisplay from './parameters/NetworkDisplay.jsx'
 import PlotContainer from './plotting/PlotContainer.jsx'
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -23,11 +23,11 @@ export default function App(props){
     <ThemeProvider theme={theme}>
     <ButtonAppBar/>
     <Box m={4}>
-    <Grid container spacing={4}>
-      <Grid item xs>
-        <ParameterTable snapshot={props.snapshot}/>
+    <Grid container spacing={2}>
+      <Grid item xs={6}>
+        <NetworkDisplay snapshot={props.snapshot}/>
       </Grid>
-      <Grid item xs>
+      <Grid item xs={6}>
         <PlotContainer/>
       </Grid>
     </Grid>
