@@ -4,7 +4,6 @@ import Box from "@material-ui/core/Box";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
-import Plot from 'react-plotly.js';
 import Typography from '@material-ui/core/Typography';
 import PlotPanel from './PlotPanel.jsx'
 import { get, post } from '../utilities.js'

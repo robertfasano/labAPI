@@ -1,4 +1,6 @@
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const config = {
     entry:  __dirname + '/js/index.jsx',
     output: {
@@ -18,6 +20,10 @@ const config = {
           use: 'babel-loader'
         }
       ]
-    }
+    },
+    plugins: [
+      new BundleAnalyzerPlugin({analyzerPort: 4200})
+    ]
+
 };
 module.exports = config;

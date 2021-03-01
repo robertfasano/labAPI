@@ -1,7 +1,6 @@
 import React from 'react';
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import Plot from 'react-plotly.js';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
@@ -19,6 +18,10 @@ import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 const DragHandle = sortableHandle(() => <IconButton><DragHandleIcon/></IconButton>);
+
+import Plotly from "plotly.js-basic-dist-min";
+import createPlotlyComponent from "react-plotly.js/factory";
+const Plot = createPlotlyComponent(Plotly);
 
 function PlotPanel(props) {
   const [maxPoints, setMaxPoints] = React.useState(25)
