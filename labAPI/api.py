@@ -78,7 +78,7 @@ class API:
 
         @app.route("/")
         def main():
-            return render_template('index.html', state=self.environment.snapshot(nested=True, deep=True))
+            return render_template('index.html', state=json.dumps(self.environment.snapshot(nested=True, deep=True)))
 
         @app.route("/parameters", methods=['GET', 'POST'])
         def parameters():

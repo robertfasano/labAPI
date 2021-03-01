@@ -5,6 +5,7 @@ import reducer from './reducer.js'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import {flatten, unflatten} from 'flat';
+import {parse} from 'json5';
 
 function prepareValidationState(state, keys) {
   keys.forEach(key => {
@@ -36,10 +37,12 @@ function semiflatten(obj) {
 }
 
 export function createGUI(snapshot) {
+  snapshot = parse(snapshot)
   var state = {parameters: semiflatten(snapshot)}
 
   // get list of unique instrument paths
   console.log(semiflatten(snapshot))
+
   let instruments = []
   for (let p of Object.keys(state.parameters)) {
 
