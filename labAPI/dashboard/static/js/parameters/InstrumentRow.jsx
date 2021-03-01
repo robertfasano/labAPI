@@ -9,6 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ParameterRow from './ParameterRow.jsx'
 import { MdDeviceHub } from 'react-icons/md'
 import { connect } from 'react-redux'
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 
 function InstrumentRow(props) {
   const handleExpandClick = (event) => {
@@ -29,14 +31,14 @@ function InstrumentRow(props) {
       <TableCell align="left" padding="default">
       <Typography style={{ flex: 1, fontWeight: 600}}> {props.name} </Typography>
       </TableCell>
-      <TableCell>
-      </TableCell>
+      <TableCell/>
+      <TableCell/>
+      <TableCell/>
       <TableCell align='right' padding='default'>
         <IconButton aria-label="show more" edge='start' size='small' onClick={(event)=>handleExpandClick(event)}>
           {props.expanded.includes(props.path)? (<ExpandLessIcon />): <ExpandMoreIcon />}
         </IconButton>
       </TableCell>
-      <TableCell/>
     </TableRow>
 
 

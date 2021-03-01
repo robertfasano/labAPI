@@ -39,13 +39,14 @@ function ParameterRow(props) {
         <TableRow key={props.path} hover>
           <TableCell><BsToggleOn size={20} color='#8f8f8f'/></TableCell>
           <TableCell>{props.name}</TableCell>
+          <TableCell/>
+          <TableCell/>
           <TableCell align='right'>
             <Switch
               checked={props.data.value}
               onChange={(event) => handleToggle(event)}
             />
           </TableCell>
-          <TableCell/>
           <TableCell/>
         </TableRow>
       </React.Fragment>
@@ -66,6 +67,8 @@ function ParameterRow(props) {
         <TableRow key={props.path} hover>
           <TableCell><HiSelector size={20} color='#8f8f8f'/></TableCell>
           <TableCell>{props.name}</TableCell>
+          <TableCell/>
+          <TableCell/>
           <TableCell align='right'>
             <Select value={props.data.value}
                     style={{width: 80}}
@@ -80,7 +83,6 @@ function ParameterRow(props) {
               }
             </Select>
           </TableCell>
-          <TableCell/>
           <TableCell/>
         </TableRow>
       </React.Fragment>
@@ -100,6 +102,9 @@ function ParameterRow(props) {
         <TableRow key={props.path} hover>
           <TableCell><GiRoundKnob size={20} color='#8f8f8f'/></TableCell>
           <TableCell>{props.name}</TableCell>
+          <TableCell/>
+          <TableCell/>
+          <TableCell/>
           <TableCell align='right'>
             <ValidatedInput placeholder={props.data.value}
                             min={props.data.min}
@@ -107,8 +112,6 @@ function ParameterRow(props) {
                             onKeyPress={send}
             />
           </TableCell>
-          <TableCell/>
-          <TableCell/>
         </TableRow>
       </React.Fragment>
     )
@@ -129,9 +132,12 @@ function ParameterRow(props) {
         <TableRow key={props.path} hover>
           <TableCell><AiTwotoneExperiment size={20} color='#8f8f8f'/></TableCell>
           <TableCell>{props.name}</TableCell>
-          <TableCell align='right'>
-            <TextField value={value} disabled={true} style={{width: 80}}/>
+          <TableCell align="left">
+            <IconButton onClick={() => props.dispatch({type: 'plotting/toggle', path: props.path})} color={props.plotted? 'primary': 'default'}>
+              <TimelineIcon/>
+            </IconButton>
           </TableCell>
+          <TableCell/>
           <TableCell>
             {Object.keys(props.data.value).length > 1? (
             <Select value={props.data.unit}
@@ -148,10 +154,9 @@ function ParameterRow(props) {
             </Select>
           ) : null }
           </TableCell>
-          <TableCell>
-            <IconButton onClick={() => props.dispatch({type: 'plotting/toggle', path: props.path})} color={props.plotted? 'primary': 'default'}>
-              <TimelineIcon/>
-            </IconButton>
+
+          <TableCell align='right'>
+            <TextField value={value} disabled={true} style={{width: 80}}/>
           </TableCell>
         </TableRow>
       </React.Fragment>

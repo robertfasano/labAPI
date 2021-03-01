@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { get, post } from '../utilities.js'
 
 import InstrumentRow from './InstrumentRow.jsx'
+import InstrumentDisplay from './InstrumentDisplay.jsx'
 import SaveLoadButtons from './SaveLoadButtons.jsx'
 import FilterPopover from './FilterPopover.jsx'
 import FilterGroup from './FilterGroup.jsx'
@@ -60,16 +61,20 @@ function ParameterTable(props) {
         <Table>
         <colgroup>
          <col style={{width:'5%'}}/>
-         <col style={{width:'70%'}}/>
+         <col style={{width:'30%'}}/>
          <col style={{width:'20%'}}/>
          <col style={{width:'5%'}}/>
+         <col style={{width:'20%'}}/>
+         <col style={{width:'20%'}}/>
          </colgroup>
         <TableHead>
           <TableRow>
-            <TableCell />
             <TableCell align="left" padding="default">
               <FilterPopover filterText={filterText} setFilterText={setFilterText} parameterFilter={parameterFilter} setParameterFilter={setParameterFilter}/>
             </TableCell>
+            <TableCell />
+            <TableCell/>
+            <TableCell/>
             <TableCell align="right" padding="none">
               <SaveLoadButtons/>
             </TableCell>
@@ -78,7 +83,6 @@ function ParameterTable(props) {
                 {expanded.length<Object.keys(props.instruments).length? (<ExpandMoreIcon/>): <ExpandLessIcon/>}
               </IconButton>
             </TableCell>
-            <TableCell/>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -96,6 +100,18 @@ function ParameterTable(props) {
         </Table>
       </TableContainer>
     </Paper>
+
+    {Object.entries(visibleParameters).map(([key, val], i) => (
+        <InstrumentDisplay name={key}
+                       expanded={expanded}
+                       setExpanded={setExpanded}
+                       subitems={val}
+                       key={key}
+                       path={key}
+                       />
+    ))
+    }
+
     </React.Fragment>
   )
 }
