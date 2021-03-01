@@ -55,7 +55,7 @@ export default function ValidatedInputLite({placeholder, min, max, onKeyPress}) 
                  error={error}
                  helperText={errorText}
                  onKeyUp={handleKeyPress}
-                 style={{width: 80}}
+                 style={{width: 100}}
                  />
   )
 }
