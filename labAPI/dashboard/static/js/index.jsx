@@ -41,8 +41,6 @@ export function createGUI(snapshot) {
   var state = {parameters: semiflatten(snapshot)}
 
   // get list of unique instrument paths
-  console.log(semiflatten(snapshot))
-
   let instruments = []
   for (let p of Object.keys(state.parameters)) {
 
@@ -57,6 +55,7 @@ export function createGUI(snapshot) {
 
   console.log('Preparing UI state')
   state = prepareUIState(state)
-  const store = createStore(reducer, state)
+  const enhancer = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  const store = createStore(reducer, state, enhancer)
   ReactDOM.render(<Provider store={store}><App dispatch={store.dispatch} snapshot={snapshot}/></Provider>, document.getElementById("root"))
 }
