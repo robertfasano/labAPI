@@ -40,13 +40,13 @@ function PlotPanel(props) {
     y = y.slice(Math.max(y.length - maxPoints, 1))
   }
 
-  const width = 900
+  const width = 1200
   const height = 275
-  const [layout, setLayout] = React.useState({width: width, height:height-75, margin: {t: 40, b:40}, showlegend: false})
+  const [layout, setLayout] = React.useState({autosize: true, height:height-75, margin: {t: 40, b:40}, showlegend: false})
 
   return (
     <Paper elevation={3}>
-    <Box width={width} height={height}>
+    <Box width={"100%"} height={height}>
       <Toolbar>
         <DragHandle/>
         <Typography variant="h6" style={{ flex: 1, fontFamily: 'Roboto', fontWeight: 500}}> {props.path} </Typography>
@@ -71,6 +71,9 @@ function PlotPanel(props) {
                 },
               ]}
               layout={layout}
+              config={{responsive: true}}
+              useResizeHandler={true}
+              style={{width: "100%", height: "100%"}}
             />
         ) :
         <CircularProgress />
