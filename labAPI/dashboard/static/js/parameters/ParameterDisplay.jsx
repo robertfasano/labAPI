@@ -131,7 +131,7 @@ function ParameterRow(props) {
         </Grid>
 
         <Grid container item xs={4} justify='flex-end'>
-          <ValidatedInput placeholder={props.data.value}
+          <ValidatedInput placeholder={parseFloat((Number(props.data.value).toFixed(3)))}
                           min={props.data.min}
                           max={props.data.max}
                           onKeyPress={send}
