@@ -207,6 +207,8 @@ class Measurement(Parameter):
         return str
 
     def snapshot(self, deep=False):
+        if self.value is None:
+            self.get()
         value = {self.default_unit: self.value}
         for unit, convert in self.unit_converters.items():
             value[unit] = self.convert(value[self.default_unit], unit)
