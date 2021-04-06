@@ -76,7 +76,7 @@ class Environment:
                 break
             addr.append(obj.name)
         addr.reverse()
-        if len(addr) == 1:
+        if len(addr) == 1 and isinstance(obj, Parameter):
             addr = ['uncategorized', *addr]
         return '/'.join(addr)
 
