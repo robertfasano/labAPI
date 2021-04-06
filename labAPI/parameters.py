@@ -182,10 +182,11 @@ class Knob(Parameter):
         return self.value
 
 class Measurement(Parameter):
-    def __init__(self, name, get_cmd=None, default_unit=' '):
+    def __init__(self, name, get_cmd=None, default_unit=' ', bounds=[-np.inf, np.inf]):
         super().__init__(name=name, get_cmd=get_cmd)
         self.unit_converters = {}
         self.default_unit = default_unit
+        self.bounds = bounds
 
     def convert(self, value, unit):
         if value is None:
@@ -215,7 +216,7 @@ class Measurement(Parameter):
         for unit, convert in self.unit_converters.items():
             value[unit] = self.convert(value[self.default_unit], unit)
         if deep:
-            return {'value': value, 'type': 'measurement', 'unit': self.default_unit}
+            return {'value': value, 'type': 'measurement', 'unit': self.default_unit, 'min': self.bounds[0], 'max': self.bounds[1]}
         return value
 
 class Selector(Parameter):
