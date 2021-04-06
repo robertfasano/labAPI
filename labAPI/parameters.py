@@ -82,8 +82,10 @@ class Parameter:
             then returns the value.
         '''
         if self.get_cmd is not None:
-            self.value = self.get_cmd()
-        self.update_callbacks(self.value)
+            value = self.get_cmd()
+            if value != self.value and value is not None:
+                self.value = value
+                self.update_callbacks(value)
         return self.value
 
     def set(self, value):
