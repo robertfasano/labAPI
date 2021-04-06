@@ -2,6 +2,7 @@ import gc
 from labAPI import Parameter, Instrument, API, Monitor, Measurement
 import logging
 import datetime
+from contextlib import contextmanager
 
 def is_in(element, lst):
     ''' Checks if the element is in the list by exact reference '''
@@ -22,6 +23,43 @@ class Environment:
         self.snapshot(log=True)
 
         self.monitor.start()
+
+    @staticmethod
+    @contextmanager
+    def handle():
+        ''' Returns a handle to the Environment within the local kernel '''
+        resource = None
+        for item in gc.get_objects():
+            if isinstance(item, Environment):
+                resource = item
+                break
+        try:
+            yield resource
+        finally:
+            del resource
+
+    @staticmethod
+    @contextmanager
+    def lookup(addr):
+        ''' Provides a context manager for access of instruments or parameters
+            within the local Environment.
+            Example:
+                with Environment.lookup("wavemeter") as wm:
+                    print(wm.frequency)
+                with Environment.lookup('wavemeter/frequency') as freq:
+                    print(freq)
+            These two examples are identical in behavior.
+        '''
+        resource = None
+        with Environment.handle() as env:
+            if addr in env.instruments:
+                resource = env.instruments[addr]
+            elif addr in env.parameters:
+                resource = env.parameters[addr]
+            try:
+                yield resource
+            finally:
+                del resource
 
     def get_parent(self, obj):
         ''' Finds the parent object of the specified Instrument or Parameter '''
