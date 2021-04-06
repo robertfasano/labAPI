@@ -17,12 +17,6 @@ function prepareValidationState(state, keys) {
   return state
 }
 
-function prepareUIState(state) {
-  state['alert'] = {'open': false, 'severity': 'error', 'text': ''}
-
-  return state
-}
-
 function semiflatten(obj) {
   // converts an object to a flattened form with a single layer of nesting
   let flattened = flatten(obj, {delimiter: '/', safe: true})
@@ -53,8 +47,6 @@ export function createGUI(snapshot) {
   }
   state['instruments'] = instruments
 
-  console.log('Preparing UI state')
-  state = prepareUIState(state)
   const enhancer = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   const store = createStore(reducer, state, enhancer)
   ReactDOM.render(<Provider store={store}><App dispatch={store.dispatch} snapshot={snapshot}/></Provider>, document.getElementById("root"))

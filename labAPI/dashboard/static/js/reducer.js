@@ -3,19 +3,6 @@ import {setIn} from 'immutable'
 import produce from 'immer'
 import arrayMove from 'array-move';
 
-
-function alert(state={}, action) {
-  switch(action.type) {
-    default : return state;
-    case 'alert/show':
-      return {'open': true, 'severity': action.severity, 'text': action.text}
-    case 'alert/hide':
-      return produce(state, draft => {
-        draft['open'] = false
-      })
-    }
-}
-
 function instruments(state={}, action) {
   switch(action.type) {
     default : return state;
@@ -79,6 +66,6 @@ function parameters(state={}, action) {
     }
 }
 
-const reducer = combineReducers({plotting, alert,  instruments, parameters})
+const reducer = combineReducers({plotting, instruments, parameters})
 
 export default reducer

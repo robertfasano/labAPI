@@ -18,6 +18,7 @@ import { HiSelector } from 'react-icons/hi'
 import { BsToggleOn } from 'react-icons/bs'
 import { AiTwotoneExperiment } from 'react-icons/ai'
 import { get, post } from '../utilities.js'
+import { useSnackbar, withSnackbar } from 'notistack';
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
@@ -27,9 +28,19 @@ const useStyles = makeStyles({
 });
 
 function ParameterRow(props) {
-  // console.log(props.path, props.data)
-
   const classes = useStyles()
+  const [alertKey, setAlertKey] = React.useState('')
+  React.useEffect(() => {
+    if (props.alert) {
+      let key = props.enqueueSnackbar('Parameter out of range: ' + props.path, {variant: 'error', preventDuplicate: true, persist: true})
+      setAlertKey(key)
+    }
+    else {
+      props.closeSnackbar(alertKey)
+    }
+
+  }, [props.alert])
+
 
   if (!props.isVisible) {
     return null
@@ -41,7 +52,6 @@ function ParameterRow(props) {
       props.dispatch({type: 'parameters/update', path: props.path, value: newState})
       post('/parameters/' + props.path, {'value': newState})
     }
-
     return (
       <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path}>
       <Grid container spacing={1} alignItems="center" >
@@ -161,7 +171,7 @@ function ParameterRow(props) {
           </Box>
         </Grid>
 
-        <Grid container item xs={6} justify='flex-start'>
+        <Grid container item xs={5} justify='flex-start'>
           <Typography>{props.name}</Typography>
         </Grid>
 
@@ -187,9 +197,11 @@ function ParameterRow(props) {
           </Select>
         ) : null }
         </Grid>
-        <Grid container item xs={2} justify='flex-end'>
-          <TextField value={value} disabled={true} style={{width: 100}}/>
-
+        <Grid container item xs={3} justify='flex-end'>
+          <TextField value={value}
+                     InputProps={{style: {color: props.alert? '#FF0000': "rgba(0, 0, 0, 0.38)"}}}
+                     error={props.alert}
+          />
         </Grid>
       </Grid>
       </Box>
@@ -203,9 +215,10 @@ function mapStateToProps(state, ownProps){
   return {
           data: data,
           value: data.value[data.unit],
-          plotted: Object.keys(state['plotting'].data).includes(ownProps.path)
+          plotted: Object.keys(state['plotting'].data).includes(ownProps.path),
+          alert: data.value[data.unit] < data.min || data.value[data.unit] > data.max
 
         }
 }
 
-export default connect(mapStateToProps)(ParameterRow)
+export default withSnackbar(connect(mapStateToProps)(ParameterRow))

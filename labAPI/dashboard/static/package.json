@@ -23,6 +23,7 @@
     "immer": "^5.3.6",
     "immutable": "^4.0.0-rc.12",
     "json5": "^2.2.0",
+    "notistack": "^1.0.5",
     "plotly.js": "^1.58.2",
     "plotly.js-basic-dist": "^1.58.4",
     "plotly.js-basic-dist-min": "^1.58.4",

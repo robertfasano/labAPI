@@ -5,10 +5,10 @@ import NetworkDisplay from './parameters/NetworkDisplay.jsx'
 import PlotContainer from './plotting/PlotContainer.jsx'
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import AlertSnackbar from './AlertSnackbar.jsx'
 import { get } from './utilities.js'
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import { SnackbarProvider } from 'notistack';
 
 const theme = createMuiTheme({
   palette: {
@@ -20,20 +20,21 @@ const theme = createMuiTheme({
 export default function App(props){
   return (
     <div>
-    <ThemeProvider theme={theme}>
-    <ButtonAppBar/>
-    <Box m={4}>
-    <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <NetworkDisplay snapshot={props.snapshot}/>
+      <SnackbarProvider maxSnack={3} preventDuplicate>
+      <ThemeProvider theme={theme}>
+      <ButtonAppBar/>
+      <Box m={4}>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <NetworkDisplay snapshot={props.snapshot}/>
+        </Grid>
+        <Grid item xs={6}>
+          <PlotContainer/>
+        </Grid>
       </Grid>
-      <Grid item xs={6}>
-        <PlotContainer/>
-      </Grid>
-    </Grid>
-    </Box>
-    <AlertSnackbar/>
-    </ThemeProvider>
+      </Box>
+      </ThemeProvider>
+    </SnackbarProvider>
     </div>
   )
 }
