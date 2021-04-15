@@ -20,15 +20,15 @@ const theme = createMuiTheme({
 export default function App(props){
   return (
     <div>
-      <SnackbarProvider maxSnack={3} preventDuplicate>
+      <SnackbarProvider maxSnack={3} preventDuplicate anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
       <ThemeProvider theme={theme}>
       <ButtonAppBar/>
       <Box m={4}>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
+      <Grid container spacing={2} justify='space-evenly'>
+        <Grid item>
           <NetworkDisplay snapshot={props.snapshot}/>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs sm md lg xl>
           <PlotContainer/>
         </Grid>
       </Grid>

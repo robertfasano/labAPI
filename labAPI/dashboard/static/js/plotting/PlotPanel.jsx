@@ -17,7 +17,7 @@ import {sortableHandle} from 'react-sortable-hoc';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 
-const DragHandle = sortableHandle(() => <IconButton><DragHandleIcon/></IconButton>);
+const DragHandle = sortableHandle(() => <IconButton className="drag-handle"><DragHandleIcon/></IconButton>);
 
 import Plotly from "plotly.js-basic-dist-min";
 import createPlotlyComponent from "react-plotly.js/factory";
@@ -40,48 +40,49 @@ function PlotPanel(props) {
     y = y.slice(Math.max(y.length - maxPoints, 1))
   }
 
-  const width = 1200
   const height = 275
-  const [layout, setLayout] = React.useState({autosize: true, height:height-75, margin: {t: 40, b:40}, showlegend: false})
-
+  // const [layout, setLayout] = React.useState({autosize: true, height:height-75, margin: {t: 40, b:40}, showlegend: false})
+  const layout = {autosize: true, height:height-75, margin: {t: 40, b:40}, showlegend: false}
   return (
-    <Paper elevation={3}>
-    <Box width={"100%"} height={height}>
-      <Toolbar>
-        <DragHandle/>
-        <Typography variant="h6" style={{ flex: 1, fontFamily: 'Roboto', fontWeight: 500}}> {props.path} </Typography>
-        <Checkbox checked={slidingWindow} onChange={()=>setSlidingWindow(!slidingWindow)}/>
-        <Box width={90}>
-          <TextField inputProps={{style: {padding: 5}}} variant='outlined' label="Max points" value={maxPoints} onChange={(event)=>setMaxPoints(event.target.value)} disabled={!slidingWindow} />
-        </Box>
-        <IconButton onClick={remove}>
-          <CloseIcon />
-        </IconButton>
+    <Box mb={2}>
+      <Paper elevation={3}>
+      <Box width={"100%"} height={height}>
+        <Toolbar>
+          <IconButton className="drag-handle"><DragHandleIcon/></IconButton>
+          <Typography variant="h6" style={{ flex: 1, fontFamily: 'Roboto', fontWeight: 500}}> {props.path} </Typography>
+          <Checkbox checked={slidingWindow} onChange={()=>setSlidingWindow(!slidingWindow)}/>
+          <Box width={90}>
+            <TextField inputProps={{style: {padding: 5}}} variant='outlined' label="Max points" value={maxPoints} onChange={(event)=>setMaxPoints(event.target.value)} disabled={!slidingWindow} />
+          </Box>
+          <IconButton onClick={remove}>
+            <CloseIcon />
+          </IconButton>
 
-      </Toolbar>
-      <Grid container alignItems="center" justify="center" direction='row'>
-          {!loading? (
-            <Plot
-              data={[
-                {
-                  x: x,
-                  y: y,
-                  type: 'line',
-                  marker: {color: '#004e67'},
-                },
-              ]}
-              layout={layout}
-              config={{responsive: true}}
-              useResizeHandler={true}
-              style={{width: "100%", height: "100%"}}
-            />
-        ) :
-        <CircularProgress />
+        </Toolbar>
+        <Grid container alignItems="center" justify="center" direction='row'>
+            {!loading? (
+              <Plot
+                data={[
+                  {
+                    x: x,
+                    y: y,
+                    type: 'line',
+                    marker: {color: '#004e67'},
+                  },
+                ]}
+                layout={layout}
+                config={{responsive: true}}
+                useResizeHandler={true}
+                style={{width: "100%", height: "100%"}}
+              />
+          ) :
+          <CircularProgress />
 
-        }
-    </Grid>
+          }
+      </Grid>
+      </Box>
+      </Paper>
     </Box>
-    </Paper>
   )
 }
 

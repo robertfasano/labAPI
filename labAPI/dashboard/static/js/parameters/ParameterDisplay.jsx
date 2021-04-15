@@ -19,6 +19,7 @@ import { BsToggleOn } from 'react-icons/bs'
 import { AiTwotoneExperiment } from 'react-icons/ai'
 import { get, post } from '../utilities.js'
 import { useSnackbar, withSnackbar } from 'notistack';
+import MeasurementPopover from './MeasurementPopover.jsx'
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
@@ -28,6 +29,7 @@ const useStyles = makeStyles({
 });
 
 function ParameterRow(props) {
+  const rowHeight = '50px'
   const classes = useStyles()
   const [alertKey, setAlertKey] = React.useState('')
   React.useEffect(() => {
@@ -53,7 +55,7 @@ function ParameterRow(props) {
       post('/parameters/' + props.path, {'value': newState})
     }
     return (
-      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path}>
+      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
       <Grid container spacing={1} alignItems="center" >
         <Grid container item xs={2}>
           <Box ml={2}>
@@ -88,7 +90,7 @@ function ParameterRow(props) {
 
     return (
 
-      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path}>
+      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
       <Grid container spacing={1} alignItems="center">
         <Grid container item xs={2}>
           <Box ml={2}>
@@ -128,7 +130,7 @@ function ParameterRow(props) {
     }
 
     return (
-      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path}>
+      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
       <Grid container spacing={1} alignItems="center">
         <Grid container item xs={2}>
           <Box ml={2}>
@@ -163,7 +165,7 @@ function ParameterRow(props) {
     }
 
     return (
-      <Box py={0} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path}>
+      <Box py={0} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
       <Grid container spacing={1} alignItems="center">
         <Grid container item xs={2}>
           <Box ml={2}>
@@ -171,14 +173,17 @@ function ParameterRow(props) {
           </Box>
         </Grid>
 
-        <Grid container item xs={5} justify='flex-start'>
+        <Grid container item xs={3} justify='flex-start'>
           <Typography>{props.name}</Typography>
         </Grid>
 
-        <Grid container item xs={1} justify='flex-end'>
+        <Grid container item xs={3} justify='flex-end'>
+          <Box>
           <IconButton onClick={() => props.dispatch({type: 'plotting/toggle', path: props.path})} color={props.plotted? 'primary': 'default'}>
             <TimelineIcon/>
           </IconButton>
+          <MeasurementPopover data={props.data}/>
+          </Box>
         </Grid>
 
         <Grid container item xs={1} justify='flex-end'>

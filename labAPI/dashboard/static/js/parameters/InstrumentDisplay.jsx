@@ -6,7 +6,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from "@material-ui/core/Paper";
-import ParameterRow from './ParameterRow.jsx'
 import ParameterDisplay from './ParameterDisplay.jsx'
 import { MdDeviceHub } from 'react-icons/md'
 import { connect } from 'react-redux'
@@ -38,22 +37,22 @@ function InstrumentDisplay(props) {
     <Paper elevation={3} className={classes.root}>
     <Grid container spacing={2} >
       <Grid container item xs={12} onClick={(event)=>handleExpandClick(event)}>
-      <Grid container item xs={2}>
-        <Box ml={2}>
-          <MdDeviceHub size={20} />
-        </Box>
-      </Grid>
+        <Grid container item xs={2}>
+          <Box ml={2} className="drag-handle">
+            <MdDeviceHub size={20} />
+          </Box>
+        </Grid>
 
-      <Grid container item xs={6} justify="flex-start">
-        <Typography style={{ flex: 1, fontWeight: 600}}> {props.name} </Typography>
-      </Grid>
+        <Grid container item xs={6} justify="flex-start">
+          <Typography style={{ flex: 1, fontWeight: 600}}> {props.name} </Typography>
+        </Grid>
 
-      <Grid container item xs={4} justify="flex-end">
-        <IconButton aria-label="show more" edge='start' size='small' disabled>
-          {props.expanded.includes(props.path)? (<ExpandLessIcon />): <ExpandMoreIcon />}
-        </IconButton>
+        <Grid container item xs={4} justify="flex-end">
+          <IconButton aria-label="show more" edge='start' size='small' disabled>
+            {props.expanded.includes(props.path)? (<ExpandLessIcon />): <ExpandMoreIcon />}
+          </IconButton>
+        </Grid>
       </Grid>
-    </Grid>
 
     {Object.entries(props.subitems).map(([key, val], i) => (
       ((Object.keys(props.parameters).includes(props.path+'/'+key)))? (

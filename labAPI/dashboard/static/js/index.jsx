@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from "./App.jsx"
 import reducer from './reducer.js'
-import { createStore } from 'redux'
+import { compose, createStore } from 'redux'
+import persistState from 'redux-localstorage'
 import { Provider } from 'react-redux'
 import {flatten, unflatten} from 'flat';
 import {parse} from 'json5';
@@ -47,7 +48,9 @@ export function createGUI(snapshot) {
   }
   state['instruments'] = instruments
 
-  const enhancer = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  // const enhancer = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+  const enhancer = composeEnhancers(persistState(['plotting']))
   const store = createStore(reducer, state, enhancer)
   ReactDOM.render(<Provider store={store}><App dispatch={store.dispatch} snapshot={snapshot}/></Provider>, document.getElementById("root"))
 }
