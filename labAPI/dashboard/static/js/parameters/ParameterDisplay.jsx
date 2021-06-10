@@ -160,10 +160,6 @@ function ParameterRow(props) {
       value = props.value.toFixed(3)
     }
 
-    function updateUnit(event) {
-      props.dispatch({type: 'parameters/setUnit', path: props.path, value: event.target.value})
-    }
-
     return (
       <Box py={0} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
       <Grid container spacing={1} alignItems="center">
@@ -178,31 +174,6 @@ function ParameterRow(props) {
         </Grid>
 
         <Grid container item xs={3} justify='flex-end'>
-          <Box>
-          <IconButton onClick={() => props.dispatch({type: 'plotting/toggle', path: props.path})} color={props.plotted? 'primary': 'default'}>
-            <TimelineIcon/>
-          </IconButton>
-          <MeasurementPopover data={props.data}/>
-          </Box>
-        </Grid>
-
-        <Grid container item xs={1} justify='flex-end'>
-        {Object.keys(props.data.value).length > 1? (
-          <Select value={props.data.unit}
-                  style={{width: 100}}
-                  onChange={updateUnit}
-                  >
-            {Object.keys(props.data.value).map((row, index) => {
-                return (
-                  <MenuItem key={row} value={row}>{row}</MenuItem>
-                  )
-                }
-              )
-            }
-          </Select>
-        ) : null }
-        </Grid>
-        <Grid container item xs={3} justify='flex-end'>
           <TextField value={value}
                      InputProps={{style: {color: props.alert? '#FF0000': "rgba(0, 0, 0, 0.38)"}}}
                      error={props.alert}
@@ -216,13 +187,14 @@ function ParameterRow(props) {
 }
 
 function mapStateToProps(state, ownProps){
-  let data = state['parameters'][ownProps.path]
+  const data = state['parameters'][ownProps.path]
+  // const value = (data.value != null) ? data.value[data.unit] : null
+  const value = data.value
+  console.log(ownProps.path, value)
   return {
           data: data,
-          value: data.value[data.unit],
-          plotted: Object.keys(state['plotting'].data).includes(ownProps.path),
-          alert: data.value[data.unit] < data.min || data.value[data.unit] > data.max
-
+          value: value,
+          alert: data.value < data.min || data.value > data.max
         }
 }
 

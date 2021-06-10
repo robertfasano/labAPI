@@ -77,7 +77,7 @@ class Parameter:
             for callback in self.callbacks.values():
                 callback(value)
 
-    def get(self):
+    def get(self, callback=True):
         ''' Updates the value with the result of self.get_cmd, if defined,
             then returns the value.
         '''
@@ -85,7 +85,8 @@ class Parameter:
             value = self.get_cmd()
             if value != self.value and value is not None:
                 self.value = value
-                self.update_callbacks(value)
+                if callback:
+                    self.update_callbacks(value)
         return self.value
 
     def set(self, value):
@@ -181,20 +182,49 @@ class Knob(Parameter):
             return {'value': self.value, 'min': self.bounds[0], 'max': self.bounds[1], 'type': 'knob'}
         return self.value
 
+class Setpoint(Knob):
+    ''' Similar to Knob, but the value is retrieved with the passed get_cmd rather than
+        assigned directly from the set_cmd. This is generally used for cases when the exact value 
+        is not settable.
+    '''
+    def __init__(self, name, value=None, get_cmd=None, set_cmd=None, bounds=[-np.inf, np.inf]):
+        super().__init__(name, value=value, get_cmd=get_cmd, set_cmd=set_cmd, bounds=bounds)
+
+    def set(self, value):
+        ## check value against bounds
+        value = float(value)
+        if not self.bounds[0] <= value <= self.bounds[1]:
+            raise ValueError('Setpoint outside of defined bounds.')
+
+        ## issue set command
+        if self.set_cmd is not None:
+            self.set_cmd(value)
+
+        ## update self.value with the response of the get command
+        if self.get_cmd is not None:
+            self.value = self.get()
+
+    def snapshot(self, deep=False):
+        if deep:
+            return {'value': self.value, 'min': self.bounds[0], 'max': self.bounds[1], 'type': 'knob'}
+        return self.value
+
+
 class Measurement(Parameter):
-    def __init__(self, name, get_cmd=None, default_unit=' ', bounds=[-np.inf, np.inf]):
+    def __init__(self, name, get_cmd=None, default_unit=' ', bounds=[-np.inf, np.inf], monitor=False):
         super().__init__(name=name, get_cmd=get_cmd)
         self.unit_converters = {}
         self.default_unit = default_unit
         self.bounds = bounds
+        self.monitor = monitor
 
     def convert(self, value, unit):
         if value is None:
             return None
         return self.unit_converters[unit](value)
 
-    def get(self, unit=None):
-        self.value = super().get()
+    def get(self, unit=None, callback=True):
+        self.value = super().get(callback=callback)
         if unit is None:
             return self.value
         return self.unit_converters[unit](self.value)
@@ -210,14 +240,15 @@ class Measurement(Parameter):
         return str
 
     def snapshot(self, deep=False):
-        if self.value is None:
-            self.get()
+        if self.value is None or self.monitor:
+            self.get(callback=False)
         value = {self.default_unit: self.value}
         for unit, convert in self.unit_converters.items():
             value[unit] = self.convert(value[self.default_unit], unit)
         if deep:
-            return {'value': value, 'type': 'measurement', 'unit': self.default_unit, 'min': self.bounds[0], 'max': self.bounds[1]}
-        return value
+            return {'value': self.value, 'type': 'measurement', 'unit': self.default_unit, 'min': self.bounds[0], 'max': self.bounds[1]}
+        # return value
+        return self.value
 
 class Selector(Parameter):
     def __init__(self, name, value, options, get_cmd=None, set_cmd=None):

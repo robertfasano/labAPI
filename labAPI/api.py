@@ -1,12 +1,9 @@
 from flask import Flask, request, render_template
 import requests
 import json
-import importlib, inspect
 from threading import Thread
-from labAPI import Parameter, path, Task, Measurement
-import os
-import datetime
-import pandas as pd
+from labAPI import Parameter, path
+import os, sys
 import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
@@ -46,6 +43,10 @@ class API:
         self.port = port
         self.environment = environment
         self.debug = debug
+
+        cli = sys.modules['flask.cli']
+        cli.show_server_banner = lambda *x: None
+
 
     def get(self, endpoint):
         if endpoint[0] == '/':
@@ -111,22 +112,5 @@ class API:
                 return ''
             elif request.method == 'GET':
                 return json.dumps(parameter.get())
-
-        @app.route("/history", methods=['POST'])
-        def history():
-            data = {}
-            addrs = request.json['paths']
-            for addr in addrs:
-                data[addr] = {}
-                data[addr]['x'] = list(self.environment.monitor.data[addr].dropna().index.strftime('%Y-%m-%dT%H:%M:%S.%f%z'))
-                data[addr]['y'] = list(self.environment.monitor.data[addr].dropna())
-
-                # unit conversions
-                parameter = self.environment.parameters[addr]
-                unit = addrs[addr]
-                if unit != parameter.default_unit:
-                    data[addr]['y'] = list(map(parameter.unit_converters[unit], data[addr]['y']))
-
-            return json.dumps(data)
 
         app.run(host=self.addr, port=self.port, debug=self.debug)

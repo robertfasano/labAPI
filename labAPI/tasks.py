@@ -31,9 +31,10 @@ class Task:
         while self.active:
             if self.paused:
                 continue
-            if last_time < time.time():
+            new_time = time.time()
+            if last_time < new_time:
                 print('Warning: skipping missed tasks and resyncing the time cursor.')
-                last_time = time.time()
+                last_time = new_time
                 continue
             scheduler.enterabs(last_time, 1, target)
             last_time += period
