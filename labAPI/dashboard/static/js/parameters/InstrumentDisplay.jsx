@@ -9,12 +9,12 @@ import Paper from "@material-ui/core/Paper";
 import ParameterDisplay from './ParameterDisplay.jsx'
 import { MdDeviceHub } from 'react-icons/md'
 import { connect } from 'react-redux'
-
 import { makeStyles } from '@material-ui/core/styles';
+
 const useStyles = makeStyles({
   root: {
-    transition: "transform 0.15s ease-in-out",
-    "&:hover": { transform: "scale3d(1.01, 1.01, 1)"},
+    // transition: "transform 0.15s ease-in-out",
+    // "&:hover": { transform: "scale3d(1.01, 1.01, 1)"},
   },
 });
 

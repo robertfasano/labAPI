@@ -1,30 +1,26 @@
-import React from 'react';
-import Box from "@material-ui/core/Box";
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import React from 'react'
+import Box from "@material-ui/core/Box"
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
-import Checkbox from "@material-ui/core/Checkbox";
 import ValidatedInput from '../components/ValidatedInput.jsx'
-import IconButton from '@material-ui/core/IconButton';
-import CachedIcon from "@material-ui/icons/Cached";
-import SendIcon from "@material-ui/icons/Send";
-import TimelineIcon from '@material-ui/icons/Timeline';
-import Switch from '@material-ui/core/Switch';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton'
+import Switch from '@material-ui/core/Switch'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import TextField from '@material-ui/core/TextField'
 import { GiRoundKnob } from 'react-icons/gi';
 import { HiSelector } from 'react-icons/hi'
 import { BsToggleOn } from 'react-icons/bs'
-import { AiTwotoneExperiment } from 'react-icons/ai'
+import { AiTwotoneExperiment, AiOutlineFunction } from 'react-icons/ai'
 import { get, post } from '../utilities.js'
-import { useSnackbar, withSnackbar } from 'notistack';
-import MeasurementPopover from './MeasurementPopover.jsx'
+import { withSnackbar } from 'notistack'
+import PlayArrowIcon from '@material-ui/icons/PlayArrow'
+import { makeStyles } from '@material-ui/core/styles'
 
-import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   root: {
-    "&:hover": {backgroundColor: '#dbdbdb'},
+    // "&:hover": {backgroundColor: '#dbdbdb'},
   },
 });
 
@@ -121,7 +117,6 @@ function ParameterRow(props) {
     )
   }
 
-
   if (props.data.type == 'knob') {
     function send(event) {
       const value = event.target.value
@@ -148,6 +143,34 @@ function ParameterRow(props) {
                           max={props.data.max}
                           onKeyPress={send}
           />
+        </Grid>
+      </Grid>
+      </Box>
+    )
+  }
+
+  if (props.data.type == 'function') {
+    function send() {
+      get('/functions/' + props.path)
+    }
+
+    return (
+      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
+      <Grid container spacing={1} alignItems="center">
+        <Grid container item xs={2}>
+          <Box ml={2}>
+            <AiOutlineFunction size={20} color='#8f8f8f'/>
+          </Box>
+        </Grid>
+
+        <Grid container item xs={6} justify='flex-start'>
+          <Typography>{props.name}</Typography>
+        </Grid>
+
+        <Grid container item xs={4} justify='flex-end'>
+          <IconButton onClick={send}>
+            <PlayArrowIcon/>
+          </IconButton>
         </Grid>
       </Grid>
       </Box>

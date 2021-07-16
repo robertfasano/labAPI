@@ -273,3 +273,18 @@ class Switch(Selector):
         if deep:
             return {'value': self.value, 'type': 'switch'}
         return self.value
+
+class Function(Parameter):
+    def __init__(self, name, cmd):
+        super().__init__(name=name, value=None)
+        
+        self.cmd = cmd
+        
+    def __call__(self):
+        return self.cmd()
+
+    def snapshot(self, deep=False, refresh=False):
+        if deep:
+            return {'value': None, 'type': 'function'}
+        return None
+

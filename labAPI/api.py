@@ -81,6 +81,14 @@ class API:
         def main():
             return render_template('index.html', state=json.dumps(self.environment.snapshot(nested=True, deep=True)))
 
+        
+        @app.route("/functions/<path:addr>", methods=['GET'])
+        def function(addr):
+            if '/' not in addr:
+                addr = 'uncategorized/' + addr
+            parameter = self.environment.parameters[addr]
+            return json.dumps(parameter())
+
         @app.route("/parameters", methods=['GET', 'POST'])
         def parameters():
             if request.method == 'POST':
