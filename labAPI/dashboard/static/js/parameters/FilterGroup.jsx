@@ -1,19 +1,13 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
-import Popover from "@material-ui/core/Popover";
 import IconButton from '@material-ui/core/IconButton';
-import { get, post } from '../utilities.js'
 import TextField from '@material-ui/core/TextField';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
-import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
-import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
-import { Input, InputLabel } from "@material-ui/core";
 import { GiRoundKnob } from 'react-icons/gi';
 import { HiSelector } from 'react-icons/hi'
 import { BsToggleOn } from 'react-icons/bs'
 import { AiTwotoneExperiment } from 'react-icons/ai'
 import { MdVisibility } from 'react-icons/md'
+
 
 export default function FilterGroup(props) {
 
