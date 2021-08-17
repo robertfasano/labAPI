@@ -9,8 +9,9 @@ import { get } from '../utilities.js'
 import InstrumentDisplay from './InstrumentDisplay.jsx'
 import SaveLoadButtons from './SaveLoadButtons.jsx'
 import FilterPopover from './FilterPopover.jsx'
-import { unflatten } from 'flat';
+import { unflatten } from 'flat'
 import JSON5 from 'json5'
+import StackGrid from "react-stack-grid"
 
 function NetworkDisplay(props) {
   const [expanded, setExpanded] = React.useState(props.instruments)
@@ -44,24 +45,23 @@ function NetworkDisplay(props) {
   for (const [addr, state] of Object.entries(props.parameters)) {
     let allowedByText = (addr.toLowerCase().includes(filterText.toLowerCase()) || filterText == '')
     let allowedByClass = (parameterFilter == state.type || parameterFilter == 'all')
-    let subpath = addr.slice(0, addr.lastIndexOf('/'))
     if (allowedByText & allowedByClass) {
       visibleParameters[addr] = state
     }
   }
   visibleParameters = unflatten(visibleParameters,  {delimiter: '/'})
-  console.log(visibleParameters)
-  const topLevelParameters = Object.keys(visibleParameters)
 
+  const numInstruments = Object.keys(visibleParameters).length
+  const width = Math.min(window.innerWidth, (512+20) * numInstruments + 40)
+  
   return (
-    <Box mx={3} width='500px'>
+    <Box mx={3} width={width}>
       <Box ml={5} mr={-3}>
         <Grid container>
           <Grid item xs={1}>
             <FilterPopover filterText={filterText} setFilterText={setFilterText} parameterFilter={parameterFilter} setParameterFilter={setParameterFilter}/>
           </Grid>
-          <Grid item xs={6}/>
-          <Grid item xs={4}>
+          <Grid item xs={10}>
             <SaveLoadButtons/>
           </Grid>
           <Grid item container xs={1} justify='flex-end'>
@@ -72,20 +72,20 @@ function NetworkDisplay(props) {
         </Grid>
       </Box>
 
-      <Grid container item xs={12} direction="column">
+      <div align='left'>
+      <StackGrid columnWidth={512} gutterWidth={20} gutterHeight={20}>
         {Object.entries(visibleParameters).map(([key, val], i) => (
-          <Box mx={1} my={1} width={1}>
-            <InstrumentDisplay name={key}
-                          expanded={expanded}
-                          setExpanded={setExpanded}
-                          subitems={val}
-                          key={key}
-                          path={key}
-                          />
-          </Box>
+          <InstrumentDisplay name={key}
+                        expanded={expanded}
+                        setExpanded={setExpanded}
+                        subitems={val}
+                        key={key}
+                        path={key}
+                        />
         ))
         }
-      </Grid>
+      </StackGrid>
+      </div>
     </Box>
   )
 }
