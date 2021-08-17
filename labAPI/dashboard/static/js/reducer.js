@@ -1,7 +1,5 @@
 import { combineReducers } from 'redux'
-import {setIn} from 'immutable'
 import produce from 'immer'
-import arrayMove from 'array-move';
 
 function instruments(state={}, action) {
   switch(action.type) {
@@ -25,6 +23,6 @@ function parameters(state={}, action) {
     }
 }
 
-const reducer = combineReducers({instruments, parameters})
+const reducer = combineReducers({ instruments, parameters })
 
 export default reducer
