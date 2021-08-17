@@ -1,9 +1,8 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField';
-import { connect } from 'react-redux'
 
 export default function ValidatedInputLite({placeholder, min, max, onKeyPress}) {
-  const [defaultVal, setDefaultVal] = React.useState(placeholder)
+  let defaultVal = placeholder
   const [value, setValue] = React.useState('')
 
   const [error, setError] = React.useState(false)
@@ -28,8 +27,7 @@ export default function ValidatedInputLite({placeholder, min, max, onKeyPress}) 
       event.preventDefault();
       event.stopPropagation();
       onKeyPress(event)
-
-      setDefaultVal(event.target.value)
+      defaultVal = event.target.value
       setValue('')
     }
   }
