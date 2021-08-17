@@ -9,24 +9,16 @@ import Switch from '@material-ui/core/Switch'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
-import { GiRoundKnob } from 'react-icons/gi';
+import { GiRoundKnob } from 'react-icons/gi'
 import { HiSelector } from 'react-icons/hi'
 import { BsToggleOn } from 'react-icons/bs'
 import { AiTwotoneExperiment, AiOutlineFunction } from 'react-icons/ai'
 import { get, post } from '../utilities.js'
-import { withSnackbar } from 'notistack'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
-import { makeStyles } from '@material-ui/core/styles'
-
-const useStyles = makeStyles({
-  root: {
-    // "&:hover": {backgroundColor: '#dbdbdb'},
-  },
-});
+import { withSnackbar } from 'notistack'
 
 function ParameterRow(props) {
-  const rowHeight = '50px'
-  const classes = useStyles()
+  const rowHeight = '45px'
   const [alertKey, setAlertKey] = React.useState('')
   React.useEffect(() => {
     if (props.alert) {
@@ -51,25 +43,25 @@ function ParameterRow(props) {
       post('/parameters/' + props.path, {'value': newState})
     }
     return (
-      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
-      <Grid container spacing={1} alignItems="center" >
-        <Grid container item xs={2}>
-          <Box ml={2}>
-            <BsToggleOn size={20} color='#8f8f8f'/>
-          </Box>
-        </Grid>
+      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' key={props.path} height={rowHeight}>
+        <Grid container spacing={1} alignItems="center" >
+          <Grid container item xs={2}>
+            <Box ml={2}>
+              <BsToggleOn size={20} color='#8f8f8f'/>
+            </Box>
+          </Grid>
 
-        <Grid container item xs={8} justify='flex-start'>
-          <Typography>{props.name}</Typography>
-        </Grid>
+          <Grid container item xs={8} justify='flex-start'>
+            <Typography>{props.name}</Typography>
+          </Grid>
 
-        <Grid container item xs={2} justify='center'>
-          <Switch
-            checked={props.data.value}
-            onChange={(event) => handleToggle(event)}
-          />
+          <Grid container item xs={2} justify='center'>
+            <Switch
+              checked={props.data.value}
+              onChange={(event) => handleToggle(event)}
+            />
+          </Grid>
         </Grid>
-      </Grid>
       </Box>
 
     )
@@ -86,7 +78,7 @@ function ParameterRow(props) {
 
     return (
 
-      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
+      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' key={props.path} height={rowHeight}>
       <Grid container spacing={1} alignItems="center">
         <Grid container item xs={2}>
           <Box ml={2}>
@@ -119,13 +111,13 @@ function ParameterRow(props) {
 
   if (props.data.type == 'knob') {
     function send(event) {
-      const value = event.target.value
+      const value = parseFloat(event.target.value)
       post('/parameters/' + props.path, {'value': value})
       props.dispatch({type: 'parameters/update', path: props.path, value: value})
     }
 
     return (
-      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
+      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' key={props.path} height={rowHeight}>
       <Grid container spacing={1} alignItems="center">
         <Grid container item xs={2}>
           <Box ml={2}>
@@ -155,24 +147,24 @@ function ParameterRow(props) {
     }
 
     return (
-      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
-      <Grid container spacing={1} alignItems="center">
-        <Grid container item xs={2}>
-          <Box ml={2}>
-            <AiOutlineFunction size={20} color='#8f8f8f'/>
-          </Box>
-        </Grid>
+      <Box pb={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' key={props.path} height={rowHeight}>
+        <Grid container spacing={1} alignItems="center">
+          <Grid container item xs={2}>
+            <Box ml={2}>
+              <AiOutlineFunction size={20} color='#8f8f8f'/>
+            </Box>
+          </Grid>
 
-        <Grid container item xs={6} justify='flex-start'>
-          <Typography>{props.name}</Typography>
-        </Grid>
+          <Grid container item xs={6} justify='flex-start'>
+            <Typography>{props.name}</Typography>
+          </Grid>
 
-        <Grid container item xs={4} justify='flex-end'>
-          <IconButton onClick={send}>
-            <PlayArrowIcon/>
-          </IconButton>
+          <Grid container item xs={4} justify='flex-end'>
+            <IconButton onClick={send}>
+              <PlayArrowIcon/>
+            </IconButton>
+          </Grid>
         </Grid>
-      </Grid>
       </Box>
     )
   }
@@ -184,25 +176,27 @@ function ParameterRow(props) {
     }
 
     return (
-      <Box py={0} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' className={classes.root} key={props.path} height={rowHeight}>
-      <Grid container spacing={1} alignItems="center">
-        <Grid container item xs={2}>
-          <Box ml={2}>
-            <AiTwotoneExperiment size={20} color='#8f8f8f'/>
-          </Box>
-        </Grid>
+      <Box py={0.5} mx={2} width={1} borderTop={0.1} borderColor='#b5b5b5' key={props.path} height={rowHeight}>
+        <Grid container spacing={1} alignItems="center">
+          <Grid container item xs={2}>
+            <Box ml={2}>
+              <AiTwotoneExperiment size={20} color='#8f8f8f'/>
+            </Box>
+          </Grid>
 
-        <Grid container item xs={3} justify='flex-start'>
-          <Typography>{props.name}</Typography>
-        </Grid>
+          <Grid container item xs={6} justify='flex-start'>
+            <Typography>{props.name}</Typography>
+          </Grid>
 
-        <Grid container item xs={3} justify='flex-end'>
-          <TextField value={value}
-                     InputProps={{style: {color: props.alert? '#FF0000': "rgba(0, 0, 0, 0.38)"}}}
-                     error={props.alert}
-          />
+          <Grid container item xs={4} justify='flex-end'>
+            <TextField value={value}
+                      InputProps={{style: {color: props.alert? '#FF0000': "rgba(0, 0, 0, 0.38)"}}}
+                      error={props.alert}
+                      style={{width: 100}}
+            />
+            {/* <TextField value={value}/> */}
+          </Grid>
         </Grid>
-      </Grid>
       </Box>
     )
   }
@@ -211,9 +205,7 @@ function ParameterRow(props) {
 
 function mapStateToProps(state, ownProps){
   const data = state['parameters'][ownProps.path]
-  // const value = (data.value != null) ? data.value[data.unit] : null
   const value = data.value
-  console.log(ownProps.path, value)
   return {
           data: data,
           value: value,
@@ -222,3 +214,4 @@ function mapStateToProps(state, ownProps){
 }
 
 export default withSnackbar(connect(mapStateToProps)(ParameterRow))
+// export default connect(mapStateToProps)(ParameterRow)
