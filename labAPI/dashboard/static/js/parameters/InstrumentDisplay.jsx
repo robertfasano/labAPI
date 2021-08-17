@@ -1,22 +1,14 @@
-import React from 'react';
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Grid from '@material-ui/core/Grid';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from "@material-ui/core/Paper";
+import React from 'react'
+import Typography from "@material-ui/core/Typography"
+import Box from "@material-ui/core/Box"
+import Grid from '@material-ui/core/Grid'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import IconButton from '@material-ui/core/IconButton'
+import Paper from "@material-ui/core/Paper"
 import ParameterDisplay from './ParameterDisplay.jsx'
 import { MdDeviceHub } from 'react-icons/md'
 import { connect } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  root: {
-    // transition: "transform 0.15s ease-in-out",
-    // "&:hover": { transform: "scale3d(1.01, 1.01, 1)"},
-  },
-});
 
 function InstrumentDisplay(props) {
   const handleExpandClick = (event) => {
@@ -30,11 +22,9 @@ function InstrumentDisplay(props) {
     }
   }
 
-  const classes = useStyles()
-
   return (
     <Box mb={2} mx={2} width={1} key={props.path}>
-    <Paper elevation={3} className={classes.root}>
+    <Paper elevation={3}>
     <Grid container spacing={2} >
       <Grid container item xs={12} onClick={(event)=>handleExpandClick(event)}>
         <Grid container item xs={2}>
