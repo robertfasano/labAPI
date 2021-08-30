@@ -166,10 +166,12 @@ class Environment:
             parameter = self.parameters[p]
             state[p] = parameter.snapshot(deep, refresh=refresh)
 
-        for callback_name, callback in self.callbacks.items():
-            try:
-                callback(state)
-            except:
-                logging.warn(f'Error in Environment callback {callback_name}.')
+        if refresh:
+            for callback_name, callback in self.callbacks.items():
+                try:
+                    callback(state)
+                except Exception as e:
+                    logging.debug(f'Error in Environment callback {callback_name}:')
+                    logging.debug(e)
 
         return state
