@@ -161,6 +161,9 @@ class Environment:
 
     def snapshot(self, deep=False, refresh=True):
         ''' Stores all current parameter values in a dictionary '''
+        if self.monitor.paused:
+            refresh = False
+            
         state = {}
         for p in self.parameters:
             parameter = self.parameters[p]
