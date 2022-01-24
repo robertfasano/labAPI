@@ -28,3 +28,9 @@ class Client:
 
     def parameter(self, path):
         return RemoteParameter(self.addr, path)
+
+    def pause(self):
+        requests.get(f'http://{self.addr}/monitor/pause')
+
+    def resume(self):
+        requests.get(f'http://{self.addr}/monitor/resume')

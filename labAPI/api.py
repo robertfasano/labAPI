@@ -66,4 +66,14 @@ class API:
             elif request.method == 'GET':
                 return json.dumps(parameter.get())
 
+        @app.route("/monitor/pause")
+        def pause():
+            self.environment.monitor.paused = True
+            return self.environment.monitor.paused
+
+        @app.route("/monitor/resume")
+        def resume():
+            self.environment.monitor.paused = False
+            return self.environment.monitor.paused
+
         app.run(host=self.addr, port=self.port, debug=self.debug)
