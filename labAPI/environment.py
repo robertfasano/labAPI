@@ -36,9 +36,7 @@ class Environment:
         self.instruments, self.parameters = self.index()
         logging.debug('Finished environment discovery.')
 
-        self.monitor = Task()
-        target = lambda: self.snapshot()
-        # self.monitor.__start__(target, period)
+        self.monitor = Task(self.snapshot, period)
 
     @staticmethod
     @contextmanager

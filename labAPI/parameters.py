@@ -21,6 +21,8 @@
         Switch: a parameter with only true/false setpoints
 '''
 import numpy as np
+import logging 
+from labAPI.exceptions import timeout, TimeoutException
 
 class Parameter:
     ''' The Parameter class serves as a drop-in replacement for numerical datatypes
@@ -200,20 +202,30 @@ class Setpoint(Knob):
 
 
 class Measurement(Parameter):
-    def __init__(self, name, get_cmd=None, default_unit=' ', bounds=[-np.inf, np.inf], monitor=False):
+    def __init__(self, name, get_cmd=None, default_unit=' ', bounds=[-np.inf, np.inf], monitor=False, timeout=None):
         super().__init__(name=name, get_cmd=get_cmd)
         self.unit_converters = {}
         self.default_unit = default_unit
         self.bounds = bounds
         self.monitor = monitor
-
+        self.timeout = timeout
+        
     def convert(self, value, unit):
         if value is None:
             return None
         return self.unit_converters[unit](value)
 
     def get(self, unit=None):
-        self.value = super().get()
+        if self.timeout is None:
+            self.value = super().get()
+        else:
+            try:
+                self.value = timeout(self.timeout)(super().get)()
+            except TimeoutException:
+                if self.monitor:
+                    logging.warn(f'Measurement {self.name} timed out; deregistering from monitor.')
+                    self.monitor = False
+
         if unit is None:
             return self.value
         return self.unit_converters[unit](self.value)
