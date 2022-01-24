@@ -54,9 +54,6 @@ class API:
             return json.dumps(self.environment.snapshot(refresh=False))
 
 
-        @app.route("/snapshots")
-        def snapshots():
-            return self.environment.snapshots.to_json(orient='index')
 
         @app.route("/parameters/<path:addr>", methods=['GET', 'POST'])
         def parameter(addr):
