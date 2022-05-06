@@ -1,1 +1,2 @@
 from .gaussian_process import GaussianProcess
+from .functional_model import FunctionalModel
