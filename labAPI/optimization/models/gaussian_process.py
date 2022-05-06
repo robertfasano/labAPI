@@ -36,3 +36,6 @@ class GaussianProcess(Model):
         mu, sigma = self.predict(X)
         return b*mu + (1-b)*sigma
         # return -np.sqrt(b**2*mu**2+(1-b**2)*sigma**2)
+
+    def score(self):
+        return self.model.score(self.X, self.y)

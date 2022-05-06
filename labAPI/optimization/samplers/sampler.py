@@ -104,7 +104,7 @@ class Sampler:
         self.y = np.append(self.y, result)
 
 
-        return -self.sign*result
+        return self.sign*result
 
     @property
     def dataset(self):

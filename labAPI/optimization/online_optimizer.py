@@ -7,18 +7,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class OnlineOptimizer:
-    def __init__(self, cost, sampler=None, model=None, optimizer=None, samples=None):
+    def __init__(self, cost, sampler=None, model=None, optimizer=None, samples=None, output=False):
         self.cost = cost
 
         self.sampler = sampler
         self.model = model
         self.optimizer = optimizer
         self.samples = samples 
+        self.output = output
 
         if self.sampler is None:
             self.sampler = RandomSearch
 
         self.sampler = self.sampler(self.cost)
+        self.sampler.show_progress = output
 
         if self.model is None:
             self.model = GaussianProcess
@@ -54,7 +56,10 @@ class OnlineOptimizer:
         leash = np.linspace(1, leash, batches)    # gradually tightening fraction of total search space
 
         n = 0
-        for b0 in tqdm(b):
+        iterator = b
+        if self.output:
+            iterator = tqdm(b)
+        for b0 in iterator:
             opt = self.optimizer(partial(self.model.cost, b=b0))
 
             X0 = self.model.X[np.argmin(self.model.y)]            
@@ -71,7 +76,8 @@ class OnlineOptimizer:
                 self.sampler.measure(x0)
 
             self.model.fit(self.sampler.X, self.sampler.y)
-            print(f'Completed batch {n}. Model score: {self.model.model.score(self.model.X, self.model.y)}.')
+            if self.output:
+                print(f'Completed batch {n}. Model score: {self.model.score()}.')
             n += 1
             
     def plot_model(self):
