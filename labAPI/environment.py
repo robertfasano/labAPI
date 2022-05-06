@@ -167,6 +167,13 @@ class Environment:
             parameter = self.parameters[p]
             state[p] = parameter.snapshot(deep, refresh=refresh)
 
+        ''' LabAPI internal parameters '''
+        if deep:
+            state['labAPI/monitor/paused'] = {'value': self.monitor.paused}
+        else:
+            state['labAPI/monitor/paused'] = self.monitor.paused
+
+
         if refresh:
             for callback_name, callback in self.callbacks.items():
                 try:
