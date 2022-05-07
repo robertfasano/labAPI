@@ -35,7 +35,7 @@ export default function FilterGroup(props) {
         <IconButton color='default' disabled={true}>
           <SearchIcon/>
         </IconButton>
-        <TextField value={props.filterText} onChange={(event) => props.setFilterText(event.target.value)} />
+        <TextField value={props.filterText} onChange={(event) => props.setFilterText(event.target.value)} variant='standard' />
     </React.Fragment>
   )
 }
