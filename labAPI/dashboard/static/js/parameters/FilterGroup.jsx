@@ -1,13 +1,12 @@
-import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import SearchIcon from '@material-ui/icons/Search';
-import { GiRoundKnob } from 'react-icons/gi';
-import { HiSelector } from 'react-icons/hi'
-import { BsToggleOn } from 'react-icons/bs'
-import { AiTwotoneExperiment } from 'react-icons/ai'
-import { MdVisibility } from 'react-icons/md'
-
+import React from 'react'
+import IconButton from '@material-ui/core/IconButton'
+import TextField from '@material-ui/core/TextField'
+import SearchIcon from '@mui/icons-material/Search'
+import ScienceIcon from '@mui/icons-material/Science'
+import TuneIcon from '@mui/icons-material/Tune'
+import ToggleOnIcon from '@mui/icons-material/ToggleOn'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import ListIcon from '@mui/icons-material/List'
 
 export default function FilterGroup(props) {
 
@@ -19,21 +18,20 @@ export default function FilterGroup(props) {
   return (
     <React.Fragment>
         <IconButton color={props.parameterFilter=='all'? 'primary': 'default'} onClick={()=>props.setParameterFilter('all')}>
-          <MdVisibility />
+          <VisibilityIcon/>
         </IconButton>
         <IconButton color={props.parameterFilter=='knob'? 'primary': 'default'} onClick={()=>props.setParameterFilter('knob')}>
-          <GiRoundKnob />
+          <TuneIcon/>
         </IconButton>
         <IconButton color={props.parameterFilter=='switch'? 'primary': 'default'} onClick={()=>props.setParameterFilter('switch')}>
-          <BsToggleOn />
+          <ToggleOnIcon/>
         </IconButton>
         <IconButton color={props.parameterFilter=='selector'? 'primary': 'default'} onClick={()=>props.setParameterFilter('selector')}>
-          <HiSelector />
+          <ListIcon/>
         </IconButton>
         <IconButton color={props.parameterFilter=='measurement'? 'primary': 'default'} onClick={()=>props.setParameterFilter('measurement')}>
-          <AiTwotoneExperiment />
+          <ScienceIcon/>
         </IconButton>
-
         <IconButton color='default' disabled={true}>
           <SearchIcon/>
         </IconButton>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import IconButton from '@material-ui/core/IconButton';
-import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
-import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import FolderOpenOutlinedIcon from '@mui/icons-material/FolderOpenOutlined';
 
 import { get, post } from '../utilities.js'
 

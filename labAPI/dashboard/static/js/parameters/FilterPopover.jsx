@@ -1,19 +1,15 @@
-import React from 'react';
-import Box from '@material-ui/core/Box';
-import Popover from "@material-ui/core/Popover";
-import IconButton from '@material-ui/core/IconButton';
-import { get, post } from '../utilities.js'
-import TextField from '@material-ui/core/TextField';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import SearchIcon from '@material-ui/icons/Search';
-import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
-import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
-import { Input, InputLabel } from "@material-ui/core";
-import { GiRoundKnob } from 'react-icons/gi';
-import { HiSelector } from 'react-icons/hi'
-import { BsToggleOn } from 'react-icons/bs'
-import { AiTwotoneExperiment } from 'react-icons/ai'
-import { MdVisibility } from 'react-icons/md'
+import React from 'react'
+import Box from '@material-ui/core/Box'
+import Popover from "@material-ui/core/Popover"
+import IconButton from '@material-ui/core/IconButton'
+import TextField from '@material-ui/core/TextField'
+import FilterListIcon from '@mui/icons-material/FilterList'
+import SearchIcon from '@mui/icons-material/Search'
+import ScienceIcon from '@mui/icons-material/Science'
+import TuneIcon from '@mui/icons-material/Tune'
+import ToggleOnIcon from '@mui/icons-material/ToggleOn'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import ListIcon from '@mui/icons-material/List'
 
 function FilterPopover(props) {
 
@@ -41,19 +37,19 @@ function FilterPopover(props) {
         >
           <Box display='flex'>
             <IconButton color={props.parameterFilter=='all'? 'primary': 'default'} onClick={()=>props.setParameterFilter('all')}>
-              <MdVisibility />
+              <VisibilityIcon/>
             </IconButton>
             <IconButton color={props.parameterFilter=='knob'? 'primary': 'default'} onClick={()=>props.setParameterFilter('knob')}>
-              <GiRoundKnob />
+              <TuneIcon/>
             </IconButton>
             <IconButton color={props.parameterFilter=='switch'? 'primary': 'default'} onClick={()=>props.setParameterFilter('switch')}>
-              <BsToggleOn />
+              <ToggleOnIcon/>
             </IconButton>
             <IconButton color={props.parameterFilter=='selector'? 'primary': 'default'} onClick={()=>props.setParameterFilter('selector')}>
-              <HiSelector />
+              <ListIcon/>
             </IconButton>
             <IconButton color={props.parameterFilter=='measurement'? 'primary': 'default'} onClick={()=>props.setParameterFilter('measurement')}>
-              <AiTwotoneExperiment />
+              <ScienceIcon/>
             </IconButton>
 
           </Box>

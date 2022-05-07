@@ -9,13 +9,14 @@ import Switch from '@material-ui/core/Switch'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
-import { GiRoundKnob } from 'react-icons/gi'
-import { HiSelector } from 'react-icons/hi'
-import { BsToggleOn } from 'react-icons/bs'
-import { AiTwotoneExperiment, AiOutlineFunction } from 'react-icons/ai'
 import { get, post } from '../utilities.js'
-import PlayArrowIcon from '@material-ui/icons/PlayArrow'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { withSnackbar } from 'notistack'
+import ScienceIcon from '@mui/icons-material/Science'
+import TuneIcon from '@mui/icons-material/Tune'
+import ToggleOnIcon from '@mui/icons-material/ToggleOn'
+import ListIcon from '@mui/icons-material/List'
+import CodeIcon from '@mui/icons-material/Code'
 
 function ParameterRow(props) {
   const rowHeight = '45px'
@@ -47,7 +48,7 @@ function ParameterRow(props) {
         <Grid container spacing={1} alignItems="center" >
           <Grid container item xs={2}>
             <Box ml={2}>
-              <BsToggleOn size={20} color='#8f8f8f'/>
+              <ToggleOnIcon size={20} sx={{color:'#8f8f8f'}}/>
             </Box>
           </Grid>
 
@@ -82,7 +83,7 @@ function ParameterRow(props) {
       <Grid container spacing={1} alignItems="center">
         <Grid container item xs={2}>
           <Box ml={2}>
-            <HiSelector size={20} color='#8f8f8f'/>
+            <ListIcon size={20} sx={{color:'#8f8f8f'}}/>
           </Box>
         </Grid>
 
@@ -121,7 +122,7 @@ function ParameterRow(props) {
       <Grid container spacing={1} alignItems="center">
         <Grid container item xs={2}>
           <Box ml={2}>
-            <GiRoundKnob size={20} color='#8f8f8f'/>
+            <TuneIcon size={20} sx={{color:'#8f8f8f'}}/>
           </Box>
         </Grid>
 
@@ -151,7 +152,7 @@ function ParameterRow(props) {
         <Grid container spacing={1} alignItems="center">
           <Grid container item xs={2}>
             <Box ml={2}>
-              <AiOutlineFunction size={20} color='#8f8f8f'/>
+              <CodeIcon size={20} sx={{color:'#8f8f8f'}}/>
             </Box>
           </Grid>
 
@@ -180,7 +181,7 @@ function ParameterRow(props) {
         <Grid container spacing={1} alignItems="center">
           <Grid container item xs={2}>
             <Box ml={2}>
-              <AiTwotoneExperiment size={20} color='#8f8f8f'/>
+              <ScienceIcon size={20} sx={{color:'#8f8f8f'}}/>
             </Box>
           </Grid>
 

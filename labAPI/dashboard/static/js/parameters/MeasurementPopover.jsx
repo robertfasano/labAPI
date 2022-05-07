@@ -7,7 +7,7 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
-import BrokenImageIcon from '@material-ui/icons/BrokenImage';
+import BrokenImageIcon from '@mui/icons-material/BrokenImage';
 
 function MeasurementPopover (props) {
   const [anchorEl, setAnchorEl] = React.useState(null)

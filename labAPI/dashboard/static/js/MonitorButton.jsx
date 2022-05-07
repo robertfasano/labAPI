@@ -3,8 +3,8 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import PauseIcon from '@material-ui/icons/Pause'
-import PlayArrowIcon from '@material-ui/icons/PlayArrow'
+import PauseIcon from '@mui/icons-material/Pause'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { post } from './utilities.js'
 
 function MonitorButton (props) {

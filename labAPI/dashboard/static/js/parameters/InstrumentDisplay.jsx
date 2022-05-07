@@ -2,12 +2,12 @@ import React from 'react'
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 import Grid from '@material-ui/core/Grid'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import IconButton from '@material-ui/core/IconButton'
 import Paper from "@material-ui/core/Paper"
 import ParameterDisplay from './ParameterDisplay.jsx'
-import { MdDeviceHub } from 'react-icons/md'
+import DeviceHubIcon from '@mui/icons-material/DeviceHub'
 import { connect } from 'react-redux'
 
 function InstrumentDisplay(props) {
@@ -29,7 +29,7 @@ function InstrumentDisplay(props) {
       <Grid container item xs={12} onClick={(event)=>handleExpandClick(event)}>
         <Grid container item xs={2}>
           <Box ml={2} className="drag-handle">
-            <MdDeviceHub size={20} />
+            <DeviceHubIcon size={20} />
           </Box>
         </Grid>
 
