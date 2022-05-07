@@ -1,10 +1,10 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
-import Paper from '@material-ui/core/Paper'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
-import IconButton from '@material-ui/core/IconButton'
+import IconButton from '@mui/material/IconButton'
 import { connect } from 'react-redux'
 import { get } from '../utilities.js'
 import InstrumentDisplay from './InstrumentDisplay.jsx'
@@ -54,8 +54,8 @@ function NetworkDisplay(props) {
   const width = Math.min(window.innerWidth, 540)
 
   return (
-    <Box mx={3} width={width}>
-      <Box ml={5} mr={-3}>
+    <Box sx={{ width: width, mx: 3 }}>
+      <Box sx={{ ml: 5, mr:-3 }}>
         <Grid container>
           <Grid item xs={1}>
             <FilterPopover filterText={filterText} setFilterText={setFilterText} parameterFilter={parameterFilter} setParameterFilter={setParameterFilter}/>
@@ -63,7 +63,7 @@ function NetworkDisplay(props) {
           <Grid item xs={10}>
             <SaveLoadButtons/>
           </Grid>
-          <Grid item container xs={1} justify='flex-end'>
+          <Grid item container xs={1} justifyContent='flex-end'>
             <IconButton aria-label="update" onClick={toggleExpandAll} color="primary">
               {expanded.length<Object.keys(props.instruments).length? (<ExpandMoreIcon/>): <ExpandLessIcon/>}
             </IconButton>

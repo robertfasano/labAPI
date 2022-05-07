@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import Popover from '@material-ui/core/Popover'
-import Box from '@material-ui/core/Box'
-import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import Popover from '@mui/material/Popover'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
 import { connect } from 'react-redux'
 import BrokenImageIcon from '@mui/icons-material/BrokenImage';
 

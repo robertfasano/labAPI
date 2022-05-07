@@ -1,11 +1,11 @@
 import React from 'react'
-import Typography from "@material-ui/core/Typography"
-import Box from "@material-ui/core/Box"
-import Grid from '@material-ui/core/Grid'
+import Typography from "@mui/material/Typography"
+import Box from "@mui/material/Box"
+import Grid from '@mui/material/Grid'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
-import IconButton from '@material-ui/core/IconButton'
-import Paper from "@material-ui/core/Paper"
+import IconButton from '@mui/material/IconButton'
+import Paper from "@mui/material/Paper"
 import ParameterDisplay from './ParameterDisplay.jsx'
 import DeviceHubIcon from '@mui/icons-material/DeviceHub'
 import { connect } from 'react-redux'
@@ -23,57 +23,63 @@ function InstrumentDisplay(props) {
   }
 
   return (
-    <Box mb={2} mx={2} width={1} key={props.path}>
+    <Box key={props.path} sx={{ mb: '12px', mx: '2px', width: 1}}>
     <Paper elevation={3}>
-    <Grid container spacing={2} >
-      <Grid container item xs={12} onClick={(event)=>handleExpandClick(event)}>
-        <Grid container item xs={2}>
-          <Box ml={2} className="drag-handle">
-            <DeviceHubIcon size={20} />
-          </Box>
+    {/* <Grid container spacing='24px' > */}
+
+      <Box py='8px'>
+        <Grid container item xs={12} onClick={(event)=>handleExpandClick(event)}>
+          <Grid container item xs={2}>
+            <Box className="drag-handle" sx={{ ml: 2}}>
+              <DeviceHubIcon size={20} />
+            </Box>
+          </Grid>
+
+          <Grid container item xs={6} justifyContent="flex-start">
+            <Typography style={{ flex: 1, fontWeight: 600}}> {props.name} </Typography>
+          </Grid>
+
+          <Grid container item xs={4} justifyContent="flex-end">
+            <IconButton aria-label="show more" edge='start' size='small' disabled>
+              {props.expanded.includes(props.path)? (<ExpandLessIcon />): <ExpandMoreIcon />}
+            </IconButton>
+          </Grid>
+        </Grid>
+      </Box>
+
+    <Box px='16px'>
+      {Object.entries(props.subitems).map(([key, val], i) => (
+        ((Object.keys(props.parameters).includes(props.path+'/'+key)))? (
+        <ParameterDisplay key={props.path+'/'+key}
+                      name={key}
+                      path={props.path+'/'+key}
+                      isVisible={props.expanded.includes(props.path)}
+        />
+                    ): null
+                  )
+                )
+
+      }
+    </Box>
+
+    <Box px='12px'>
+      {Object.entries(props.subitems).map(([key, val], i) => (
+        (props.expanded.includes(props.path) & !(Object.keys(props.parameters).includes(props.path+'/'+key)))? (
+        <Grid container item xs={12} key={props.path+'/'+key}>
+        <SubInstrumentDisplay key={props.path+'/'+key}
+                      name={key}
+                      expanded={props.expanded}
+                      setExpanded={props.setExpanded}
+                      subitems={val}
+                      path={props.path+'/'+key}
+                      />
         </Grid>
 
-        <Grid container item xs={6} justify="flex-start">
-          <Typography style={{ flex: 1, fontWeight: 600}}> {props.name} </Typography>
-        </Grid>
-
-        <Grid container item xs={4} justify="flex-end">
-          <IconButton aria-label="show more" edge='start' size='small' disabled>
-            {props.expanded.includes(props.path)? (<ExpandLessIcon />): <ExpandMoreIcon />}
-          </IconButton>
-        </Grid>
-      </Grid>
-
-    {Object.entries(props.subitems).map(([key, val], i) => (
-      ((Object.keys(props.parameters).includes(props.path+'/'+key)))? (
-      <ParameterDisplay key={props.path+'/'+key}
-                    name={key}
-                    path={props.path+'/'+key}
-                    isVisible={props.expanded.includes(props.path)}
-      />
-                   ): null
-                 )
-               )
-
-    }
-
-
-    {Object.entries(props.subitems).map(([key, val], i) => (
-      (props.expanded.includes(props.path) & !(Object.keys(props.parameters).includes(props.path+'/'+key)))? (
-      <Grid container item xs={12} key={props.path+'/'+key}>
-      <SubInstrumentDisplay key={props.path+'/'+key}
-                     name={key}
-                     expanded={props.expanded}
-                     setExpanded={props.setExpanded}
-                     subitems={val}
-                     path={props.path+'/'+key}
-                     />
-      </Grid>
-
-                   ): null
-    ))
-    }
-    </Grid>
+                    ): null
+      ))
+      }
+    </Box>
+    {/* </Grid> */}
     </Paper>
     </Box>
   );

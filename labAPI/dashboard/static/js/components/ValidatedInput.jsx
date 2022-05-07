@@ -1,5 +1,5 @@
 import React from 'react'
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
 export default function ValidatedInputLite({placeholder, min, max, onKeyPress}) {
   let defaultVal = placeholder
@@ -54,6 +54,7 @@ export default function ValidatedInputLite({placeholder, min, max, onKeyPress}) 
                  helperText={errorText}
                  onKeyUp={handleKeyPress}
                  style={{width: 100}}
+                 variant='standard'
                  />
   )
 }

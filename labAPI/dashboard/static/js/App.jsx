@@ -1,11 +1,11 @@
 import React from 'react'
 import ButtonAppBar from './TopBar.jsx'
 import NetworkDisplay from './parameters/NetworkDisplay.jsx'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { SnackbarProvider } from 'notistack'
-import CssBaseline from '@material-ui/core/CssBaseline'
+import CssBaseline from '@mui/material/CssBaseline'
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {main: "#67001a"},
     secondary: {main: '#004e67'},
