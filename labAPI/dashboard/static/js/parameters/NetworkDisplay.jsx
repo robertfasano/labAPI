@@ -1,6 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
+import Paper from '@material-ui/core/Paper'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import IconButton from '@material-ui/core/IconButton'
@@ -11,15 +12,14 @@ import SaveLoadButtons from './SaveLoadButtons.jsx'
 import FilterPopover from './FilterPopover.jsx'
 import { unflatten } from 'flat'
 import JSON5 from 'json5'
-import StackGrid from "react-stack-grid"
 
 function NetworkDisplay(props) {
-  const [expanded, setExpanded] = React.useState(props.instruments)
+  const [expanded, setExpanded] = React.useState([])
+
   function toggleExpandAll() {
     if (expanded.length < props.instruments.length) setExpanded(props.instruments)
     else setExpanded([])
   }
-
 
   function sync() {
     get('/parameters', (response) => {
@@ -45,15 +45,14 @@ function NetworkDisplay(props) {
   for (const [addr, state] of Object.entries(props.parameters)) {
     let allowedByText = (addr.toLowerCase().includes(filterText.toLowerCase()) || filterText == '')
     let allowedByClass = (parameterFilter == state.type || parameterFilter == 'all')
-    if (allowedByText & allowedByClass) {
+    if (allowedByText & allowedByClass & !addr.includes('labAPI')) {
       visibleParameters[addr] = state
     }
   }
   visibleParameters = unflatten(visibleParameters,  {delimiter: '/'})
 
-  const numInstruments = Object.keys(visibleParameters).length
-  const width = Math.min(window.innerWidth, (512+20) * numInstruments + 40)
-  
+  const width = Math.min(window.innerWidth, 540)
+
   return (
     <Box mx={3} width={width}>
       <Box ml={5} mr={-3}>
@@ -72,21 +71,18 @@ function NetworkDisplay(props) {
         </Grid>
       </Box>
 
-      <div align='left'>
-      <StackGrid columnWidth={512} gutterWidth={20} gutterHeight={20}>
-        {Object.entries(visibleParameters).map(([key, val], i) => (
-          <InstrumentDisplay name={key}
-                        expanded={expanded}
-                        setExpanded={setExpanded}
-                        subitems={val}
-                        key={key}
-                        path={key}
-                        />
-        ))
-        }
-      </StackGrid>
-      </div>
+      {Object.entries(visibleParameters).map(([key, val], i) => (
+        <InstrumentDisplay name={key}
+                      expanded={expanded}
+                      setExpanded={setExpanded}
+                      subitems={val}
+                      key={key}
+                      path={key}
+                      />
+      ))
+      }
     </Box>
+
   )
 }
 

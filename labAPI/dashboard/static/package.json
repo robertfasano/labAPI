@@ -31,7 +31,6 @@
     "react-icons": "^3.11.0",
     "react-plotly.js": "^2.5.1",
     "react-redux": "^7.2.2",
-    "react-stack-grid": "^0.7.1",
     "redux": "^4.0.5",
     "redux-localstorage": "^0.4.1"
   },
