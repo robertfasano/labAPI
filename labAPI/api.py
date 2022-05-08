@@ -66,14 +66,16 @@ class API:
             elif request.method == 'GET':
                 return json.dumps(parameter.get())
 
-        @app.route("/monitor/pause")
+        @app.route("/monitor/pause", methods=['GET', 'POST'])
         def pause():
-            self.environment.monitor.paused = True
-            return self.environment.monitor.paused
+            logging.warning('Pausing monitoring loop.')
+            self.environment.monitor.pause()
+            return json.dumps(self.environment.monitor.paused)
 
-        @app.route("/monitor/resume")
+        @app.route("/monitor/resume", methods=['GET', 'POST'])
         def resume():
-            self.environment.monitor.paused = False
-            return self.environment.monitor.paused
+            logging.warning('Resuming monitoring loop.')
+            self.environment.monitor.resume()
+            return json.dumps(self.environment.monitor.paused)
 
         app.run(host=self.addr, port=self.port, debug=self.debug)

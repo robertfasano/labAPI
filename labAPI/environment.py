@@ -1,5 +1,5 @@
 import gc
-from labAPI import Parameter, Instrument, API, Task
+from labAPI import Parameter, Instrument, API, Monitor
 import logging
 from contextlib import contextmanager
 
@@ -9,7 +9,6 @@ def is_in(element, lst):
         if element is elem:
             return True
     return False
-
 
 class Environment:
     def __init__(self, period=1, logfile=''):
@@ -34,9 +33,16 @@ class Environment:
         logging.debug('Starting LabAPI environment...')
         self.all_instruments, self.all_parameters = self.discover()
         self.instruments, self.parameters = self.index()
+
+        for inst in self.all_instruments:
+            inst.index()
+
+        for p in self.all_parameters:
+            p.__address__ = self.get_address(p)
+
         logging.debug('Finished environment discovery.')
 
-        self.monitor = Task(self.snapshot, period)
+        self.monitor = Monitor(self, period=period)
 
     @staticmethod
     @contextmanager
@@ -157,11 +163,8 @@ class Environment:
 
         return all_instruments, all_parameters
 
-    def snapshot(self, deep=False, refresh=True):
+    def snapshot(self, deep=False, refresh=True, fire_callbacks=False):
         ''' Stores all current parameter values in a dictionary '''
-        if self.monitor.paused:
-            refresh = False
-            
         state = {}
         for p in self.parameters:
             parameter = self.parameters[p]
@@ -173,8 +176,7 @@ class Environment:
         else:
             state['labAPI/monitor/paused'] = self.monitor.paused
 
-
-        if refresh:
+        if fire_callbacks:
             for callback_name, callback in self.callbacks.items():
                 try:
                     callback(state)

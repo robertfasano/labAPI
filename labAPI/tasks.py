@@ -1,4 +1,4 @@
-from threading import Thread
+from threading import Thread, Event
 import sched
 import time
 import logging
@@ -11,6 +11,7 @@ class Task:
         self.paused = False
         self.thread = None
         self.type = type
+        self.event = Event()
 
     def __start__(self):
         self.active = True
@@ -22,6 +23,12 @@ class Task:
         self.active = False
 
     def __run_periodic__(self):
+        while self.active:
+            if not self.paused:
+                self.target()
+            self.event.wait(self.period)
+
+    def __run_scheduled__(self):
         ''' If a period is passed, uses Python's sched library to
             avoid timing drifts. Make sure that the passed period is longer than
             the time required to call the target function.
