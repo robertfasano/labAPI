@@ -31,7 +31,7 @@ class API:
 
         @app.route("/")
         def main():
-            return render_template('index.html', state=json.dumps(self.environment.snapshot(deep=True)))
+            return render_template('index.html', state=json.dumps(self.environment.snapshot(refresh=False, deep=True)))
 
         @app.route("/functions/<path:addr>", methods=['GET'])
         def function(addr):
