@@ -74461,6 +74461,39 @@ if (
 
 /***/ }),
 
+/***/ "./node_modules/react-dom/client.js":
+/*!******************************************!*\
+  !*** ./node_modules/react-dom/client.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var m = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+if (false) {} else {
+  var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+  exports.createRoot = function(c, o) {
+    i.usingClientEntryPoint = true;
+    try {
+      return m.createRoot(c, o);
+    } finally {
+      i.usingClientEntryPoint = false;
+    }
+  };
+  exports.hydrateRoot = function(c, h, o) {
+    i.usingClientEntryPoint = true;
+    try {
+      return m.hydrateRoot(c, h, o);
+    } finally {
+      i.usingClientEntryPoint = false;
+    }
+  };
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/react-dom/index.js":
 /*!*****************************************!*\
   !*** ./node_modules/react-dom/index.js ***!
@@ -84767,7 +84800,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 /* harmony import */ var _App_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.jsx */ "./js/App.jsx");
 /* harmony import */ var _reducer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./reducer.js */ "./js/reducer.js");
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
@@ -84807,11 +84840,12 @@ function createGUI(snapshot) {
   var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux__WEBPACK_IMPORTED_MODULE_7__.compose;
   var enhancer = composeEnhancers(redux_localstorage__WEBPACK_IMPORTED_MODULE_4___default()(['plotting']));
   var store = (0,redux__WEBPACK_IMPORTED_MODULE_7__.createStore)(_reducer_js__WEBPACK_IMPORTED_MODULE_3__["default"], state, enhancer);
-  react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_redux__WEBPACK_IMPORTED_MODULE_5__.Provider, {
+  var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(document.getElementById("root"));
+  root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_redux__WEBPACK_IMPORTED_MODULE_5__.Provider, {
     store: store
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_App_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
     dispatch: store.dispatch
-  })), document.getElementById("root"));
+  })));
 }
 })();
 
