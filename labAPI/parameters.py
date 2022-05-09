@@ -248,8 +248,9 @@ class Measurement(Parameter):
         return self.value
 
 class Selector(Parameter):
-    def __init__(self, name, value, options, get_cmd=None, set_cmd=None):
+    def __init__(self, name, value, options, get_cmd=None, set_cmd=None, monitor=False):
         self.options = options
+        self.monitor = monitor
         super().__init__(name=name, value=value, get_cmd=get_cmd, set_cmd=set_cmd)
 
     def set(self, value):
@@ -258,15 +259,20 @@ class Selector(Parameter):
         super().set(value)
 
     def snapshot(self, deep=False, refresh=False):
+        if self.value is None or (self.monitor and refresh):
+            self.get()
         if deep:
             return {'value': self.value, 'options': self.options, 'type': 'selector'}
         return self.value
 
 class Switch(Selector):
-    def __init__(self, name, value, get_cmd=None, set_cmd=None):
-        super().__init__(name, value, [True, False], get_cmd=get_cmd, set_cmd=set_cmd)
+    def __init__(self, name, value, get_cmd=None, set_cmd=None, monitor=False):
+        self.monitor = monitor
+        super().__init__(name, value, [True, False], get_cmd=get_cmd, set_cmd=set_cmd, monitor=monitor)
 
     def snapshot(self, deep=False, refresh=False):
+        if self.value is None or (self.monitor and refresh):
+            self.get()
         if deep:
             return {'value': self.value, 'type': 'switch'}
         return self.value
