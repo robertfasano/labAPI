@@ -2,6 +2,7 @@ import gc
 from labAPI import Parameter, Instrument, API, Monitor
 import logging
 from contextlib import contextmanager
+import json
 
 def is_in(element, lst):
     ''' Checks if the element is in the list by exact reference '''
@@ -11,7 +12,7 @@ def is_in(element, lst):
     return False
 
 class Environment:
-    def __init__(self, period=1, logfile=''):
+    def __init__(self, period=1, logfile='', defaults='./state.json'):
         '''
         Args:
             period (float): sampling period in seconds.
@@ -41,6 +42,17 @@ class Environment:
             p.__address__ = self.get_address(p)
 
         logging.debug('Finished environment discovery.')
+
+        ## load default parameters from file if it exists
+        try:
+            with open(defaults, 'r') as file:
+                params = json.load(file)
+            logging.info(f'Loading parameter defaults from {defaults}.')
+        except FileNotFoundError:
+            params = {}
+        for key, val in params.items():
+            if key in self.parameters:
+                self.parameters[key].set(val)
 
         self.monitor = Monitor(self, period=period)
 
