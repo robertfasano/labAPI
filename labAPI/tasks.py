@@ -8,7 +8,7 @@ class Task:
         self.target = target
         self.period = period
         self.active = False
-        self.paused = False
+        self.paused = True
         self.thread = None
         self.type = type
         self.event = Event()

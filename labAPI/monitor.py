@@ -3,7 +3,7 @@ from labAPI import Task
 class Monitor:
     def __init__(self, environment, period=1):
         self.environment = environment
-        self.paused = False
+        self.paused = True
         self.tasks = {}
 
         self.tasks['__logger__'] = Task(lambda: environment.snapshot(deep=False, refresh=False, fire_callbacks=True), period)

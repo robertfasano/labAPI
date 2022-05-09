@@ -94,12 +94,13 @@ class Environment:
         '''
         with Environment.handle() as env:
             original_state = env.monitor.paused
-            env.monitor.paused = True
+            env.monitor.pause()
         
             try:
                 yield None
             finally:
-                env.monitor.paused = original_state
+                if not original_state:
+                    env.monitor.resume()
 
     def get_parent(self, obj):
         ''' Finds the parent object of the specified Instrument or Parameter '''
