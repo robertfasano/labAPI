@@ -10,6 +10,8 @@ import TuneIcon from '@mui/icons-material/Tune'
 import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import ListIcon from '@mui/icons-material/List'
+import Autocomplete from '@mui/material/Autocomplete'
+import { connect } from 'react-redux'
 
 function FilterPopover(props) {
 
@@ -17,7 +19,7 @@ function FilterPopover(props) {
   const handleClick = (event) => setAnchorEl(event.currentTarget)
   const handleClose = () => setAnchorEl(null)
   const filterOpen = Boolean(anchorEl)
-
+  const [inputValue, setInputValue] = React.useState('')
   return (
     <React.Fragment>
     <IconButton color={filterOpen? 'primary': 'default'} onClick={handleClick}>
@@ -58,11 +60,26 @@ function FilterPopover(props) {
             <IconButton color='default' disabled={true}>
               <SearchIcon/>
             </IconButton>
-            <TextField value={props.filterText} onChange={(event) => props.setFilterText(event.target.value)} />
+            <Autocomplete options={props.parameters}
+              value={props.filterText}
+              renderInput={(params) => <TextField {...params} label={props.label} variant='standard' />}
+              onChange = {(event, newValue) => props.setFilterText(newValue || '')}
+              inputValue={inputValue}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue)
+              }}
+              style={{ width: '250px' }}
+            />
+
+
           </Box>
       </Popover>
     </React.Fragment>
   )
 }
 
-export default FilterPopover
+// export default FilterPopover
+function mapStateToProps(state, ownProps){
+  return {parameters: Object.keys(state['parameters'])}
+}
+export default connect(mapStateToProps)(FilterPopover)
