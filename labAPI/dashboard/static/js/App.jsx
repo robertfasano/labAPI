@@ -1,10 +1,11 @@
 import React from 'react'
-import ButtonAppBar from './TopBar.jsx'
+import TopBar from './TopBar.jsx'
 import NetworkDisplay from './parameters/NetworkDisplay.jsx'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import io from 'socket.io-client'
 import { useSnackbar } from 'notistack'
+import { connect } from 'react-redux'
 
 const theme = createTheme({
   palette: {
@@ -26,7 +27,7 @@ const theme = createTheme({
 
 })
 
-export default function App(props){
+function App(props){
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
 
   React.useEffect(() => {
@@ -38,14 +39,23 @@ export default function App(props){
     socket.on('console', (data) => {
       enqueueSnackbar(data)
     })
+
+    socket.on('snapshot', (data) => {
+      for (const [path, value] of Object.entries(data)) {
+        props.dispatch({type: 'parameters/update', path: path, value: value})
+        props.dispatch({type: 'heartbeat'})
+      }
+    })
   },
   [])
 
   return (
       <ThemeProvider theme={theme}>
         <CssBaseline/>
-        <ButtonAppBar/>
+        <TopBar/>
         <NetworkDisplay/>
       </ThemeProvider>
   )
 }
+
+export default connect()(App)

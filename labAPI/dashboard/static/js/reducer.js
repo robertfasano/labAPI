@@ -23,6 +23,19 @@ function parameters(state={}, action) {
     }
 }
 
-const reducer = combineReducers({ instruments, parameters })
+function ui(state={}, action) {
+  switch(action.type) {
+    default : return state;
+
+    case 'heartbeat':
+      return produce(state, draft => {
+        draft['heartbeat'] = !state.heartbeat
+      })
+
+    }
+}
+
+
+const reducer = combineReducers({ instruments, parameters, ui })
 
 export default reducer

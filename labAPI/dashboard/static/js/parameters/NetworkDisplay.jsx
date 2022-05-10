@@ -21,22 +21,6 @@ function NetworkDisplay(props) {
     else setExpanded([])
   }
 
-  function sync() {
-    get('/parameters', (response) => {
-      response = JSON5.parse(JSON.stringify(response))
-      for (const [path, value] of Object.entries(response)) {
-        props.dispatch({type: 'parameters/update', path: path, value: value})
-      }
-    })
-  }
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      sync()
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   const [filterText, setFilterText] = React.useState('')
   const [parameterFilter, setParameterFilter] = React.useState('all')
 

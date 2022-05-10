@@ -4,6 +4,8 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { makeStyles } from '@mui/styles'
 import MonitorButton from './MonitorButton.jsx'
+import Heartbeat from './Heartbeat.jsx'
+
 export default function ButtonAppBar() {
   const useStyles = makeStyles(theme => ({
     appBar: {
@@ -24,6 +26,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" style={{ flex: 1, fontFamily: 'Roboto', fontWeight: 500}}> LabAPI </Typography>
           <Typography style={{ flexGrow: 1 }}>  </Typography>
           <MonitorButton/>
+          <Heartbeat/>
         </Toolbar>
       </AppBar>
       <div className={classes.appBarSpacer} />
