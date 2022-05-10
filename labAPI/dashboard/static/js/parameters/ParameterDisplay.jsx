@@ -65,7 +65,7 @@ function SelectWidget (props) {
 
   return (
     <Select value={props.data.value}
-    style={{width: 80}}
+    style={{width: 100}}
     onChange={(event) => handleChange(event)}
     variant='standard'
     >
@@ -166,11 +166,11 @@ function ParameterRow(props) {
           </Box>
         </Grid>
 
-        <Grid container item xs={8} justifyContent='flex-start'>
+        <Grid container item xs={7} justifyContent='flex-start'>
           <Typography>{props.name}</Typography>
         </Grid>
 
-        <Grid container item xs={2} justifyContent='center'>
+        <Grid container item xs={3} justifyContent='center'>
           {Widget(props.data.type, props)}
         </Grid>
       </Grid>
