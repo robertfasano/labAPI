@@ -22,7 +22,7 @@ export function createGUI(snapshot) {
     }
   }
 
-  const state = { parameters, instruments, ui: { heartbeat: false } }
+  const state = { parameters, instruments }
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
   const enhancer = composeEnhancers(persistState(['plotting']))

@@ -11,7 +11,7 @@ class TaskManager:
         self.thread.start()
 
     def add(self, addr):
-        logger.info(f'Scheduled task: {addr}. Position in queue: {len(self.queue)+1}.')
+        logger.debug(f'Scheduled task: {addr}. Position in queue: {len(self.queue)+1}.')
         self.queue.append(addr)
 
     def execute(self, addr):

@@ -49,6 +49,11 @@ class API:
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         
+        def emit_snapshot(snapshot):
+            socketio.emit('snapshot', snapshot)
+
+        self.environment.callbacks['client'] = emit_snapshot
+
 
         @app.route("/")
         def main():
@@ -72,6 +77,9 @@ class API:
                         continue
             return json.dumps(self.environment.snapshot(refresh=False))
 
+        @app.route("/ping")
+        def ping():
+            return json.dumps(True)
 
 
         @app.route("/parameters/<path:addr>", methods=['GET', 'POST'])

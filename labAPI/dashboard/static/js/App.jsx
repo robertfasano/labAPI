@@ -23,27 +23,19 @@ const theme = createTheme({
       }
     }
   }
-
-
 })
 
 function App(props){
   const { enqueueSnackbar, closeSnackbar } = useSnackbar()
-
+  
   React.useEffect(() => {
     const socket = io()
-    socket.on('connect', (data) => {
-      enqueueSnackbar('Connected to LabAPI server.', {variant: 'success'})
-    })
-
     socket.on('console', (data) => {
       enqueueSnackbar(data)
     })
-
     socket.on('snapshot', (data) => {
       for (const [path, value] of Object.entries(data)) {
         props.dispatch({type: 'parameters/update', path: path, value: value})
-        props.dispatch({type: 'heartbeat'})
       }
     })
   },
