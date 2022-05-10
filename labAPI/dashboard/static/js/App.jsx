@@ -2,8 +2,9 @@ import React from 'react'
 import ButtonAppBar from './TopBar.jsx'
 import NetworkDisplay from './parameters/NetworkDisplay.jsx'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { SnackbarProvider } from 'notistack'
 import CssBaseline from '@mui/material/CssBaseline'
+import io from 'socket.io-client'
+import { useSnackbar } from 'notistack'
 
 const theme = createTheme({
   palette: {
@@ -26,13 +27,25 @@ const theme = createTheme({
 })
 
 export default function App(props){
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+
+  React.useEffect(() => {
+    const socket = io()
+    socket.on('connect', (data) => {
+      enqueueSnackbar('Connected to LabAPI server.', {variant: 'success'})
+    })
+
+    socket.on('console', (data) => {
+      enqueueSnackbar(data)
+    })
+  },
+  [])
+
   return (
-    <SnackbarProvider maxSnack={3} preventDuplicate anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
       <ThemeProvider theme={theme}>
         <CssBaseline/>
         <ButtonAppBar/>
         <NetworkDisplay/>
       </ThemeProvider>
-    </SnackbarProvider>
   )
 }

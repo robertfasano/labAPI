@@ -22,6 +22,7 @@
 '''
 import numpy as np
 import logging 
+logger = logging.getLogger('labAPI')
 from labAPI.exceptions import timeout, TimeoutException
 
 class Parameter:
@@ -223,7 +224,7 @@ class Measurement(Parameter):
                 self.value = timeout(self.timeout)(super().get)()
             except TimeoutException:
                 if self.monitor:
-                    logging.warn(f'Measurement {self.name} timed out; deregistering from monitor.')
+                    logger.warn(f'Measurement {self.name} timed out; deregistering from monitor.')
                     self.monitor = False
 
         if unit is None:

@@ -1,6 +1,7 @@
 import gc
 from labAPI import Parameter, Instrument, API, Monitor
 import logging
+logger = logging.getLogger('labAPI')
 from contextlib import contextmanager
 import json
 
@@ -31,7 +32,7 @@ class Environment:
                     datefmt='%Y-%m-%dT%H:%M:%S', 
                     level=logging.INFO)
 
-        logging.debug('Starting LabAPI environment...')
+        logger.debug('Starting LabAPI environment...')
         self.all_instruments, self.all_parameters = self.discover()
         self.instruments, self.parameters = self.index()
 
@@ -41,13 +42,13 @@ class Environment:
         for p in self.all_parameters:
             p.__address__ = self.get_address(p)
 
-        logging.debug('Finished environment discovery.')
+        logger.debug('Finished environment discovery.')
 
         ## load default parameters from file if it exists
         try:
             with open(defaults, 'r') as file:
                 params = json.load(file)
-            logging.info(f'Loading parameter defaults from {defaults}.')
+            logger.info(f'Loading parameter defaults from {defaults}.')
         except FileNotFoundError:
             params = {}
         for key, val in params.items():
@@ -134,7 +135,7 @@ class Environment:
         return '/'.join(addr)
 
     def host(self, addr='127.0.0.1:8000', debug=False):
-        logging.info(f'Running LabAPI server on {addr}')
+        logger.info(f'Running LabAPI server on {addr}')
 
         self.api = API(self, addr=addr.split(':')[0], port=addr.split(':')[1], debug=debug)
         self.api.run()
@@ -149,13 +150,13 @@ class Environment:
         for item in self.all_instruments:
             addr = self.get_address(item)
             if addr in instruments:
-                logging.warning(f'Warning: overwriting duplicate instrument: {addr}')
+                logger.warning(f'Warning: overwriting duplicate instrument: {addr}')
             instruments[addr] = item
 
         for item in self.all_parameters:
             addr = self.get_address(item)
             if addr in parameters:
-                logging.warning(f'Warning: overwriting duplicate parameter: {addr}')
+                logger.warning(f'Warning: overwriting duplicate parameter: {addr}')
 
             parameters[addr] = item
 
@@ -169,10 +170,10 @@ class Environment:
         for item in gc.get_objects():
             if isinstance(item, Instrument):
                 all_instruments.append(item)
-                logging.debug(f'Discovered Instrument: {item.name}')
+                logger.debug(f'Discovered Instrument: {item.name}')
             elif isinstance(item, Parameter):
                 all_parameters.append(item)
-                logging.debug(f'Discovered Parameter: {item.name}')
+                logger.debug(f'Discovered Parameter: {item.name}')
 
         return all_instruments, all_parameters
 
@@ -194,7 +195,7 @@ class Environment:
                 try:
                     callback(state)
                 except Exception as e:
-                    logging.debug(f'Error in Environment callback {callback_name}:')
-                    logging.debug(e)
+                    logger.debug(f'Error in Environment callback {callback_name}:')
+                    logger.debug(e)
 
         return state

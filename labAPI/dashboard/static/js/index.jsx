@@ -6,6 +6,7 @@ import { compose, createStore } from 'redux'
 import persistState from 'redux-localstorage'
 import { Provider } from 'react-redux'
 import { parse } from 'json5'
+import { SnackbarProvider } from 'notistack'
 
 export function createGUI(snapshot) {
   const parameters = parse(snapshot)
@@ -27,5 +28,9 @@ export function createGUI(snapshot) {
   const enhancer = composeEnhancers(persistState(['plotting']))
   const store = createStore(reducer, state, enhancer)
   const root = createRoot(document.getElementById("root"))
-  root.render(<Provider store={store}><App dispatch={store.dispatch}/></Provider>)
+  root.render(<Provider store={store}>
+                <SnackbarProvider maxSnack={3} preventDuplicate anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} autoHideDuration={10000}>
+                  <App dispatch={store.dispatch}/>
+                </SnackbarProvider>
+              </Provider>)
 }

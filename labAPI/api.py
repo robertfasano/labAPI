@@ -1,11 +1,18 @@
 from flask import Flask, request, render_template, Response
+from flask_socketio import SocketIO
 import json
 from threading import Thread
-from labAPI import path
+from labAPI import path, TaskManager
 import os, sys
 import logging
+logger = logging.getLogger('labAPI')
+from uuid import uuid1
 
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
+logging.getLogger('werkzeug').disabled = True
+logging.getLogger('socketio').setLevel(logging.ERROR)
+logging.getLogger('engineio').setLevel(logging.ERROR)
+logging.getLogger('geventwebsocket.handler').setLevel(logging.ERROR)
 
 class API:
     def __init__(self, environment, addr='127.0.0.1', port=8000, debug=False):
@@ -16,6 +23,8 @@ class API:
 
         cli = sys.modules['flask.cli']
         cli.show_server_banner = lambda *x: None
+
+        self.task_manager = TaskManager(self.environment)
 
     def run(self):
         if self.debug:
@@ -28,6 +37,18 @@ class API:
         app = Flask(__name__,
                     template_folder=os.path.join(path, 'dashboard/templates'),
                     static_folder=os.path.join(path, 'dashboard/static'))
+        app.logger.disabled = True
+        socketio = SocketIO(app)
+
+        class SocketIOHandler(logging.Handler):
+            def emit(self, record):
+                self.format(record)
+                socketio.emit('console', f'{record.asctime} {record.levelname} {record.msg}')
+        handler = SocketIOHandler()
+        formatter = logging.Formatter('%(asctime)s.%(msecs)03d %(levelname)s [%(module)s.%(funcName)s] %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        
 
         @app.route("/")
         def main():
@@ -35,10 +56,8 @@ class API:
 
         @app.route("/functions/<path:addr>", methods=['GET'])
         def function(addr):
-            if '/' not in addr:
-                addr = 'uncategorized/' + addr
-            parameter = self.environment.parameters[addr]
-            return json.dumps(parameter())
+            self.task_manager.add(addr)
+            return json.dumps(True)
 
         @app.route("/parameters", methods=['GET', 'POST'])
         def parameters():
@@ -68,14 +87,15 @@ class API:
 
         @app.route("/monitor/pause", methods=['GET', 'POST'])
         def pause():
-            logging.warning('Pausing monitoring loop.')
+            logger.warning('Pausing monitoring loop.')
             self.environment.monitor.pause()
             return json.dumps(self.environment.monitor.paused)
 
         @app.route("/monitor/resume", methods=['GET', 'POST'])
         def resume():
-            logging.warning('Resuming monitoring loop.')
+            logger.warning('Resuming monitoring loop.')
             self.environment.monitor.resume()
             return json.dumps(self.environment.monitor.paused)
 
-        app.run(host=self.addr, port=self.port, debug=self.debug)
+        # app.run(host=self.addr, port=self.port, debug=self.debug)
+        socketio.run(app, host=self.addr, port=int(self.port), debug=self.debug)

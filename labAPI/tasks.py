@@ -2,6 +2,7 @@ from threading import Thread, Event
 import sched
 import time
 import logging
+logger = logging.getLogger('labAPI')
 
 class Task:
     def __init__(self, target, period, type=None):
@@ -36,7 +37,7 @@ class Task:
             Args:
                 period (float): the repetition time in seconds
         '''
-        logging.info('Starting monitoring loop.')
+        logger.info('Starting monitoring loop.')
         scheduler = sched.scheduler(time.time, time.sleep)
 
         last_time = time.time()
@@ -45,7 +46,7 @@ class Task:
                 continue
             new_time = time.time()
             if last_time < new_time:
-                logging.warn('Warning: skipping missed tasks and resyncing the time cursor.')
+                logger.warn('Warning: skipping missed tasks and resyncing the time cursor.')
                 last_time = new_time
                 continue
             scheduler.enterabs(last_time, 1, self.target)

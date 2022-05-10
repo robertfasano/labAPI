@@ -3,6 +3,7 @@
 '''
 from labAPI import Parameter
 import logging
+logger = logging.getLogger('labAPI')
 
 class Instrument:
     def __init__(self, name):
@@ -19,7 +20,7 @@ class Instrument:
         for item in self.__dict__.values():
             if isinstance(item, Parameter):
                 self.__parameters__[item.name] = item
-                logging.debug(f'Discovered Parameter: {item.name}')
+                logger.debug(f'Discovered Parameter: {item.name}')
 
     def snapshot(self, deep=False, refresh=True):
         state = {}
