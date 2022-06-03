@@ -18,6 +18,7 @@ import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 import ListIcon from '@mui/icons-material/List'
 import CodeIcon from '@mui/icons-material/Code'
 import StopIcon from '@mui/icons-material/Stop'
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark'
 
 const rowHeight = '50px'
 
@@ -49,10 +50,12 @@ function SwitchWidget (props) {
     post('/parameters/' + props.path, {'value': newState})
   }
   return (
-    <Switch
-      checked={props.data.value}
-      onChange={(event) => handleToggle(event)}
-    />
+    <Grid container item xs={4} justifyContent='center'>
+      <Switch
+        checked={props.data.value}
+        onChange={(event) => handleToggle(event)}
+      />
+    </Grid>
   )
 }
 
@@ -65,19 +68,21 @@ function SelectWidget (props) {
   }
 
   return (
-    <Select value={props.data.value}
-    style={{width: 100}}
-    onChange={(event) => handleChange(event)}
-    variant='standard'
-    >
-      {props.data.options.map((row, index) => {
-        return (
-          <MenuItem key={row} value={row}>{row}</MenuItem>
-          )
+    <Grid container item xs={4} justifyContent='center'>
+      <Select value={props.data.value}
+      style={{width: 100}}
+      onChange={(event) => handleChange(event)}
+      variant='standard'
+      >
+        {props.data.options.map((row, index) => {
+          return (
+            <MenuItem key={row} value={row}>{row}</MenuItem>
+            )
+          }
+        )
         }
-      )
-      }
-    </Select>
+      </Select>
+    </Grid>
   )
 }
 
@@ -89,11 +94,13 @@ function KnobWidget (props) {
   }
 
   return (
-    <ValidatedInput placeholder={parseFloat((Number(props.data.value).toFixed(3)))}
-      min={props.data.min}
-      max={props.data.max}
-      onKeyPress={send}
-    />
+    <Grid container item xs={4} justifyContent='center'>
+      <ValidatedInput placeholder={parseFloat((Number(props.data.value).toFixed(3)))}
+        min={props.data.min}
+        max={props.data.max}
+        onKeyPress={send}
+      />
+    </Grid>
   )
 }
 
@@ -105,16 +112,16 @@ function FunctionWidget (props) {
   function clear_tasks() {
     get('/clear_tasks')
   }
-  
+
   return (
-    <>
-    <IconButton onClick={send}>
-      <PlayArrowIcon/>
-    </IconButton>
-    <IconButton onClick={clear_tasks}>
-      <StopIcon/>
-    </IconButton>
-    </>
+    <Grid container item xs={4} justifyContent='center'>
+      <IconButton onClick={send}>
+        <PlayArrowIcon/>
+      </IconButton>
+      <IconButton onClick={clear_tasks}>
+        <StopIcon/>
+      </IconButton>
+    </Grid>
   )
 }
 
@@ -124,13 +131,26 @@ function MeasurementWidget (props) {
     value = props.value.toFixed(3)
   }
 
+  function update() {
+    get('/parameters/' + props.path, (value) => props.dispatch({type: 'parameters/update', path: props.path, value: value}))
+  }
+
   return (
-    <TextField value={value}
-    InputProps={{style: {color: props.alert? '#FF0000': "rgba(0, 0, 0, 0.38)"}}}
-    error={props.alert}
-    style={{width: 100}}
-    variant='standard'
-  />
+    <>
+      <Grid container item xs={4} justifyContent='center'>
+        <TextField value={value}
+        InputProps={{style: {color: props.alert? '#FF0000': "rgba(0, 0, 0, 0.38)"}}}
+        error={props.alert}
+        style={{width: 100}}
+        variant='standard'
+        />
+      </Grid>
+      <Grid container item xs={1} justifyContent='center'>
+        <IconButton onClick={update}>
+          <QuestionMarkIcon/>
+        </IconButton>
+      </Grid>
+    </>
   )
 }
 function Widget (type, props) {
@@ -149,6 +169,7 @@ function Widget (type, props) {
       return null
   }
 }
+
 
 function ParameterRow(props) {
   const [alertKey, setAlertKey] = React.useState('')
@@ -169,21 +190,19 @@ function ParameterRow(props) {
   }
 
   return (
-    <Box pt='8px' borderTop={0.1} borderColor='#b5b5b5' key={props.path} height={rowHeight}>
-      <Grid container spacing={1} alignItems="center" >
+    <Box pt='10px' borderTop={0.1} borderColor='#b5b5b5' key={props.path} height={rowHeight}>
+      <Grid container spacing={1} >
         <Grid container item xs={2}>
           <Box ml={2}>
             {Icon(props.data.type)}
           </Box>
         </Grid>
 
-        <Grid container item xs={7} justifyContent='flex-start'>
+        <Grid container item xs={5} justifyContent='flex-start'>
           <Typography>{props.name}</Typography>
         </Grid>
 
-        <Grid container item xs={3} justifyContent='center'>
-          {Widget(props.data.type, props)}
-        </Grid>
+        {Widget(props.data.type, props)}
       </Grid>
     </Box>
   )

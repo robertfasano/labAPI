@@ -45,7 +45,7 @@ class API:
                 self.format(record)
                 socketio.emit('console', f'{record.asctime} {record.levelname} {record.msg}')
         handler = SocketIOHandler()
-        formatter = logging.Formatter('%(asctime)s.%(msecs)03d %(levelname)s [%(module)s.%(funcName)s] %(message)s')
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         
