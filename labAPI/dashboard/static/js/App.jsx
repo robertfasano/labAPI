@@ -6,6 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import io from 'socket.io-client'
 import { useSnackbar } from 'notistack'
 import { connect } from 'react-redux'
+import { get } from './utilities.js'
 
 const theme = createTheme({
   palette: {
@@ -30,6 +31,9 @@ function App(props){
   
   React.useEffect(() => {
     const socket = io()
+    socket.on('connect', (data) => {
+      get('/sync')
+    })
     socket.on('console', (data) => {
       enqueueSnackbar(data)
     })

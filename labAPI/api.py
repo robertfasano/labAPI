@@ -77,6 +77,10 @@ class API:
                         continue
             return json.dumps(self.environment.snapshot(refresh=False))
 
+        @app.route("/sync", methods=['GET'])
+        def sync():
+            return json.dumps(self.environment.snapshot(refresh=True, fire_callbacks=True))
+
         @app.route("/ping")
         def ping():
             return json.dumps(True)

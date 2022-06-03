@@ -3,8 +3,12 @@ import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { makeStyles } from '@mui/styles'
+import { get } from './utilities.js'
 import MonitorButton from './MonitorButton.jsx'
 import Heartbeat from './Heartbeat.jsx'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import IconButton from '@mui/material/IconButton'
+import Box from '@mui/material/Box'
 
 export default function ButtonAppBar() {
   const useStyles = makeStyles(theme => ({
@@ -25,6 +29,11 @@ export default function ButtonAppBar() {
         <Toolbar>
           <Typography variant="h6" style={{ flex: 1, fontFamily: 'Roboto', fontWeight: 500}}> LabAPI </Typography>
           <Typography style={{ flexGrow: 1 }}>  </Typography>
+          <Box mr={1} mt={0.5}>
+            <IconButton onClick={() => get('/sync')} style={{color: 'white'}}>
+              <RefreshIcon/>
+            </IconButton>
+          </Box>
           <MonitorButton/>
           <Heartbeat/>
         </Toolbar>
