@@ -124,11 +124,13 @@ class Environment:
     def get_address(self, obj):
         ''' Assembles the full device hierarchy address of the specified Instrument or Parameter '''
         addr = [obj.name]
+
+        parent = obj
         while True:
-            obj = self.get_parent(obj)
-            if obj is None:
+            parent = self.get_parent(parent)
+            if parent is None:
                 break
-            addr.append(obj.name)
+            addr.append(parent.name)
         addr.reverse()
         if len(addr) == 1 and isinstance(obj, Parameter):
             addr = ['uncategorized', *addr]
