@@ -167,7 +167,7 @@ class Knob(Parameter):
             raise ValueError('Setpoint outside of defined bounds.')
         super().set(value)
 
-    def snapshot(self, deep=False, refresh=False):
+    def snapshot(self, deep=False, refresh=True):
         if self.monitor:
             self.get()
         if deep:
@@ -196,7 +196,7 @@ class Setpoint(Knob):
         if self.get_cmd is not None:
             self.value = self.get()
 
-    def snapshot(self, deep=False, refresh=False):
+    def snapshot(self, deep=False, refresh=True):
         if deep:
             return {'value': self.value, 'min': self.bounds[0], 'max': self.bounds[1], 'type': 'knob'}
         return self.value
@@ -259,7 +259,7 @@ class Selector(Parameter):
             raise ValueError(f'Value should be one of {self.options}.')
         super().set(value)
 
-    def snapshot(self, deep=False, refresh=False):
+    def snapshot(self, deep=False, refresh=True):
         if self.value is None or (self.monitor and refresh):
             self.get()
         if deep:
@@ -271,7 +271,7 @@ class Switch(Selector):
         self.monitor = monitor
         super().__init__(name, value, [True, False], get_cmd=get_cmd, set_cmd=set_cmd, monitor=monitor)
 
-    def snapshot(self, deep=False, refresh=False):
+    def snapshot(self, deep=False, refresh=True):
         if self.value is None or (self.monitor and refresh):
             self.get()
         if deep:
@@ -293,7 +293,7 @@ class Function(Parameter):
     def __call__(self):
         return self.cmd()
 
-    def snapshot(self, deep=False, refresh=False):
+    def snapshot(self, deep=False, refresh=True):
         if deep:
             return {'value': None, 'type': 'function'}
         return None
