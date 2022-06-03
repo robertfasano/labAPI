@@ -17,6 +17,7 @@ import TuneIcon from '@mui/icons-material/Tune'
 import ToggleOnIcon from '@mui/icons-material/ToggleOn'
 import ListIcon from '@mui/icons-material/List'
 import CodeIcon from '@mui/icons-material/Code'
+import StopIcon from '@mui/icons-material/Stop'
 
 const rowHeight = '50px'
 
@@ -100,10 +101,20 @@ function FunctionWidget (props) {
   function send() {
     get('/functions/' + props.path)
   }
+
+  function clear_tasks() {
+    get('/clear_tasks')
+  }
+  
   return (
+    <>
     <IconButton onClick={send}>
       <PlayArrowIcon/>
     </IconButton>
+    <IconButton onClick={clear_tasks}>
+      <StopIcon/>
+    </IconButton>
+    </>
   )
 }
 

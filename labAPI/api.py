@@ -81,6 +81,9 @@ class API:
         def ping():
             return json.dumps(True)
 
+        @app.route("/clear_tasks")
+        def clear_tasks():
+            self.task_manager.clear()
 
         @app.route("/parameters/<path:addr>", methods=['GET', 'POST'])
         def parameter(addr):

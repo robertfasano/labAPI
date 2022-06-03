@@ -115,6 +115,16 @@ class Environment:
                 if not original_state:
                     env.monitor.resume()
 
+    @staticmethod
+    def cancel():
+        with Environment.handle() as env:
+            canceled = len(env.api.task_manager.queue) == 0
+        return canceled
+
+    def clear(self):
+        ''' Clears all tasks in the task manager queue. '''
+        self.api.task_manager.clear()
+
     def get_parent(self, obj):
         ''' Finds the parent object of the specified Instrument or Parameter '''
         for item in self.all_instruments:
