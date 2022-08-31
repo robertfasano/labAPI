@@ -14,6 +14,7 @@ import JSON5 from 'json5'
 
 function NetworkDisplay(props) {
   const [expanded, setExpanded] = React.useState([])
+  const [expandedTopLevel, setExpandedTopLevel] = React.useState('')
 
   function toggleExpandAll() {
     if (expanded.length < props.instruments.length) setExpanded(props.instruments)
@@ -33,7 +34,6 @@ function NetworkDisplay(props) {
     }
   }
   visibleParameters = unflatten(visibleParameters,  {delimiter: '/'})
-
   const width = Math.min(window.innerWidth, 540)
 
   return (
@@ -58,9 +58,12 @@ function NetworkDisplay(props) {
         <InstrumentDisplay name={key}
                       expanded={expanded}
                       setExpanded={setExpanded}
+                      expandedTopLevel={expandedTopLevel}
+                      setExpandedTopLevel={setExpandedTopLevel}
                       subitems={val}
                       key={key}
                       path={key}
+                      topLevel={true}
                       />
       ))
       }

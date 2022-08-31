@@ -72,6 +72,7 @@ function InstrumentDisplay(props) {
                       setExpanded={props.setExpanded}
                       subitems={val}
                       path={props.path+'/'+key}
+                      topLevel={false}
                       />
         </Grid>
 

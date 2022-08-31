@@ -39578,7 +39578,8 @@ function InstrumentDisplay(props) {
       expanded: props.expanded,
       setExpanded: props.setExpanded,
       subitems: val,
-      path: props.path + '/' + key
+      path: props.path + '/' + key,
+      topLevel: false
     })) : null;
   }))));
 }
@@ -39652,19 +39653,24 @@ function NetworkDisplay(props) {
       expanded = _React$useState2[0],
       setExpanded = _React$useState2[1];
 
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default().useState(''),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      expandedTopLevel = _React$useState4[0],
+      setExpandedTopLevel = _React$useState4[1];
+
   function toggleExpandAll() {
     if (expanded.length < props.instruments.length) setExpanded(props.instruments);else setExpanded([]);
   }
 
-  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default().useState(''),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      filterText = _React$useState4[0],
-      setFilterText = _React$useState4[1];
-
-  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0___default().useState('all'),
+  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0___default().useState(''),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      parameterFilter = _React$useState6[0],
-      setParameterFilter = _React$useState6[1]; // decide which parameters render based on filter state
+      filterText = _React$useState6[0],
+      setFilterText = _React$useState6[1];
+
+  var _React$useState7 = react__WEBPACK_IMPORTED_MODULE_0___default().useState('all'),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      parameterFilter = _React$useState8[0],
+      setParameterFilter = _React$useState8[1]; // decide which parameters render based on filter state
 
 
   var visibleParameters = {};
@@ -39727,9 +39733,12 @@ function NetworkDisplay(props) {
       name: key,
       expanded: expanded,
       setExpanded: setExpanded,
+      expandedTopLevel: expandedTopLevel,
+      setExpandedTopLevel: setExpandedTopLevel,
       subitems: val,
       key: key,
-      path: key
+      path: key,
+      topLevel: true
     });
   }));
 }
