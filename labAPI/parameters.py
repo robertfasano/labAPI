@@ -145,11 +145,11 @@ class Parameter:
         self.set(self.value-a)
         return self
 
-    def __imult__(self, a):
+    def __imul__(self, a):
         self.set(self.value*a)
         return self
 
-    def __idiv__(self, a):
+    def __itruediv__(self, a):
         self.set(self.value/a)
         return self
 
