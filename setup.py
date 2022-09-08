@@ -10,16 +10,11 @@ setup(
     packages=find_packages(exclude=['docs']),
     license='MIT',
     long_description=open('README.md').read(),
-    install_requires=[],
+    install_requires=['numpy', 'pandas', 'matplotlib', 'requests', 'tqdm', 'flask', 'flask_socketio', 'gevent', 'gevent-websocket'],
     entry_points='''
     [console_scripts]
     labAPI=labAPI.cmd:main
     ''',
 )
 
-import os
-print('Installing node_modules...')
-os.system('labAPI install')
-print('Building application...')
-os.system('labAPI build')
 print('LabAPI installation complete!')
