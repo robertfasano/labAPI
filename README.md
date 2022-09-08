@@ -1,3 +1,8 @@
+
+
+# LabAPI [![Build Status](https://app.travis-ci.com/robertfasano/labAPI.svg?branch=master)](https://app.travis-ci.com/github/robertfasano/labPI)
+LabAPI is a Python library for abstraction of device control and networking for scientific experiments. By adding several lines of code to existing device drivers, experiments can be augmented with new features like a web interface for device control, monitoring and logging of the experimental state, machine-learning optimization of experimental outcomes. 
+
 # Installation
 This installation guide assumes that you've installed the [standard Anaconda distribution](https://www.anaconda.com/products/individual]). If you're not using Anaconda, Argent can still be installed as a standard Python package without a virtual environment.
 
