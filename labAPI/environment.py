@@ -13,14 +13,13 @@ def is_in(element, lst):
     return False
 
 class Environment:
-    def __init__(self, period=1, logfile='', defaults='./state.json'):
+    def __init__(self, period=1, logfile='', defaults='./state.json', data_file=None):
         '''
         Args:
             period (float): sampling period in seconds.
         '''
         self.period = period
         self.callbacks = {}
-
         if logfile != '':
             logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)s [%(module)s.%(funcName)s] %(message)s', 
                                 datefmt='%Y-%m-%dT%H:%M:%S', 
@@ -55,7 +54,7 @@ class Environment:
             if key in self.parameters:
                 self.parameters[key].set(val)
 
-        self.monitor = Monitor(self, period=period)
+        self.monitor = Monitor(self, period=period, filename=data_file)
 
     @staticmethod
     @contextmanager
