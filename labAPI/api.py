@@ -27,13 +27,6 @@ class API:
         self.task_manager = TaskManager(self.environment)
 
     def run(self):
-        if self.debug:
-            self.serve()
-        else:
-            self.thread = Thread(target=self.serve)
-            self.thread.start()
-
-    def serve(self):
         app = Flask(__name__,
                     template_folder=os.path.join(path, 'dashboard/templates'),
                     static_folder=os.path.join(path, 'dashboard/static'))
@@ -112,5 +105,4 @@ class API:
             self.environment.monitor.resume()
             return json.dumps(self.environment.monitor.paused)
 
-        # app.run(host=self.addr, port=self.port, debug=self.debug)
         socketio.run(app, host=self.addr, port=int(self.port), debug=self.debug)
