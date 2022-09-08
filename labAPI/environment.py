@@ -1,5 +1,5 @@
 import gc
-from labAPI import Parameter, Instrument, API, Monitor
+from labAPI import Parameter, Instrument, Server, Monitor
 import logging
 logger = logging.getLogger('labAPI')
 from contextlib import contextmanager
@@ -118,12 +118,12 @@ class Environment:
     @staticmethod
     def cancel():
         with Environment.handle() as env:
-            canceled = len(env.api.task_manager.queue) == 0
+            canceled = len(env.server.task_manager.queue) == 0
         return canceled
 
     def clear(self):
         ''' Clears all tasks in the task manager queue. '''
-        self.api.task_manager.clear()
+        self.server.task_manager.clear()
 
     def get_parent(self, obj):
         ''' Finds the parent object of the specified Instrument or Parameter '''
@@ -149,8 +149,8 @@ class Environment:
     def host(self, addr='127.0.0.1:8000', debug=False):
         logger.info(f'Running LabAPI server on {addr}')
 
-        self.api = API(self, addr=addr.split(':')[0], port=addr.split(':')[1], debug=debug)
-        self.api.run()
+        self.server = Server(self, addr=addr.split(':')[0], port=addr.split(':')[1], debug=debug)
+        self.server.run()
 
     def index(self):
         ''' Sorts discovered instruments and parameters into dictionaries with each

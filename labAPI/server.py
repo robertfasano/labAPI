@@ -14,7 +14,7 @@ logging.getLogger('socketio').setLevel(logging.ERROR)
 logging.getLogger('engineio').setLevel(logging.ERROR)
 logging.getLogger('geventwebsocket.handler').setLevel(logging.ERROR)
 
-class API:
+class Server:
     def __init__(self, environment, addr='127.0.0.1', port=8000, debug=False):
         self.addr = addr
         self.port = port
