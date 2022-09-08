@@ -1,5 +1,6 @@
 from threading import Thread
 import logging
+import time
 logger = logging.getLogger('labAPI')
 
 class TaskManager:
@@ -28,6 +29,7 @@ class TaskManager:
     def run(self):
         while True:
             if len(self.queue) == 0:
+                time.sleep(0.1)
                 continue
             with self.environment.pause():
                 address = self.queue[0]
