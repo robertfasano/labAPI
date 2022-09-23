@@ -35136,8 +35136,42 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function MonitorButton(props) {
+  var checkMonitorStatus = function checkMonitorStatus() {
+    (0,_utilities_js__WEBPACK_IMPORTED_MODULE_2__.get)('/monitor/status', function (data) {
+      if (data) props.dispatch({
+        type: 'monitor/start'
+      });else props.dispatch({
+        type: 'monitor/stop'
+      });
+    });
+  };
+
+  react__WEBPACK_IMPORTED_MODULE_0___default().useEffect(function () {
+    // check whether monitor is running on first render
+    checkMonitorStatus();
+  });
+  react__WEBPACK_IMPORTED_MODULE_0___default().useEffect(function () {
+    // repeat check every 2 seconds
+    var interval = setInterval(function () {
+      checkMonitorStatus();
+    }, 2000);
+    return function () {
+      return clearInterval(interval);
+    };
+  }, []);
+
   var toggle = function toggle() {
-    if (props.paused) (0,_utilities_js__WEBPACK_IMPORTED_MODULE_2__.post)('/monitor/resume', {});else (0,_utilities_js__WEBPACK_IMPORTED_MODULE_2__.post)('/monitor/pause', {});
+    if (props.paused) {
+      (0,_utilities_js__WEBPACK_IMPORTED_MODULE_2__.post)('/monitor/resume', {});
+      props.dispatch({
+        type: 'monitor/start'
+      });
+    } else {
+      (0,_utilities_js__WEBPACK_IMPORTED_MODULE_2__.post)('/monitor/pause', {});
+      props.dispatch({
+        type: 'monitor/stop'
+      });
+    }
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material_Box__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -35157,7 +35191,7 @@ MonitorButton.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    paused: state['parameters']['labAPI/monitor/paused'].value
+    paused: !state['monitor']['running']
   };
 }
 
@@ -36301,9 +36335,30 @@ function parameters() {
   }
 }
 
+function monitor() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    default:
+      return state;
+
+    case 'monitor/start':
+      return (0,immer__WEBPACK_IMPORTED_MODULE_0__["default"])(state, function (draft) {
+        draft['running'] = true;
+      });
+
+    case 'monitor/stop':
+      return (0,immer__WEBPACK_IMPORTED_MODULE_0__["default"])(state, function (draft) {
+        draft['running'] = false;
+      });
+  }
+}
+
 var reducer = (0,redux__WEBPACK_IMPORTED_MODULE_1__.combineReducers)({
   instruments: instruments,
-  parameters: parameters
+  parameters: parameters,
+  monitor: monitor
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (reducer);
 
@@ -89390,9 +89445,13 @@ function createGUI(snapshot) {
     }
   }
 
+  var monitor = {
+    'running': false
+  };
   var state = {
     parameters: parameters,
-    instruments: instruments
+    instruments: instruments,
+    monitor: monitor
   };
   var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || redux__WEBPACK_IMPORTED_MODULE_8__.compose;
   var enhancer = composeEnhancers(redux_localstorage__WEBPACK_IMPORTED_MODULE_4___default()(['plotting']));

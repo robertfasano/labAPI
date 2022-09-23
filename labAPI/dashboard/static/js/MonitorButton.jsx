@@ -5,12 +5,39 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import PauseIcon from '@mui/icons-material/Pause'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import { post } from './utilities.js'
+import { get, post } from './utilities.js'
 
 function MonitorButton (props) {
+    const checkMonitorStatus = ()  => {
+        get('/monitor/status', (data) => {
+            if (data) props.dispatch({type: 'monitor/start'})
+            else props.dispatch({type: 'monitor/stop'})
+        }
+    )
+    }
+
+    React.useEffect(() => {
+        // check whether monitor is running on first render
+        checkMonitorStatus()   
+    })
+    React.useEffect(() => {
+        // repeat check every 2 seconds
+        const interval = setInterval(() => {
+          checkMonitorStatus()
+        }, 2000);
+        return () => clearInterval(interval);
+      }, []);
+
     const toggle = () => {
-        if (props.paused) post('/monitor/resume', {})
-        else post('/monitor/pause', {})
+        if (props.paused) 
+        {
+            post('/monitor/resume', {})
+            props.dispatch({type: 'monitor/start'})
+        }
+        else {
+            post('/monitor/pause', {})
+            props.dispatch({type: 'monitor/stop'})
+        }
     }
 
   return (
@@ -28,7 +55,7 @@ MonitorButton.propTypes = {
 
 function mapStateToProps (state, ownProps) {
   return {
-    paused: state['parameters']['labAPI/monitor/paused'].value
+    paused: !state['monitor']['running']
 
   }
 }

@@ -93,16 +93,22 @@ class Server:
             elif request.method == 'GET':
                 return json.dumps(parameter.get())
 
+        @app.route("/monitor/status", methods=['GET', 'POST'])
+        def monitor_status():
+            return json.dumps(not self.environment.monitor.paused)
+
         @app.route("/monitor/pause", methods=['GET', 'POST'])
         def pause():
-            logger.warning('Pausing monitoring loop.')
-            self.environment.monitor.pause()
+            if request.method == 'POST':
+                logger.warning('Pausing monitoring loop.')
+                self.environment.monitor.pause()
             return json.dumps(self.environment.monitor.paused)
 
         @app.route("/monitor/resume", methods=['GET', 'POST'])
         def resume():
-            logger.warning('Resuming monitoring loop.')
-            self.environment.monitor.resume()
+            if request.method == 'POST':
+                logger.warning('Resuming monitoring loop.')
+                self.environment.monitor.resume()
             return json.dumps(self.environment.monitor.paused)
 
         socketio.run(app, host=self.addr, port=int(self.port), debug=self.debug)

@@ -23,7 +23,23 @@ function parameters(state={}, action) {
     }
 }
 
+function monitor(state={}, action) {
+  switch(action.type) {
+    default : return state;
 
-const reducer = combineReducers({ instruments, parameters })
+    case 'monitor/start':
+      return produce(state, draft => {
+        draft['running'] = true
+      })
+
+    case 'monitor/stop':
+      return produce(state, draft => {
+        draft['running'] = false
+      })
+    }
+}
+
+
+const reducer = combineReducers({ instruments, parameters, monitor })
 
 export default reducer

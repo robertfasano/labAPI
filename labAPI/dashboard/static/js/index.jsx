@@ -21,8 +21,9 @@ export function createGUI(snapshot) {
       instruments.push(p)
     }
   }
+  const monitor = {'running': false}
 
-  const state = { parameters, instruments }
+  const state = { parameters, instruments, monitor }
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
   const enhancer = composeEnhancers(persistState(['plotting']))
