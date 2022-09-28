@@ -44,8 +44,8 @@ class Monitor:
         try:
             if self.filename is not None:
                 if os.path.exists(self.filename):
-                    self.data.to_csv(self.filename, mode='a', header=False)
+                    state.to_csv(self.filename, mode='a', header=False)
                 else:
-                    self.data.to_csv(self.filename, mode='w', header=True)
+                    state.to_csv(self.filename, mode='w', header=True)
         except PermissionError:
             pass
